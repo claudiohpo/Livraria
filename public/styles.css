@@ -1,0 +1,99 @@
+:root{
+  --bg: #f4f6f8;
+  --card-bg: #ffffff;
+  --primary: #2d9cdb;
+  --success: #2f855a;
+  --text: #0f1724;
+  --muted: #6b7280;
+  --radius: 12px;
+}
+
+/* Global reset + sensible defaults */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Center container that adapts to height/width */
+.wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:clamp(1rem, 4vw, 2.5rem);
+}
+
+.card{
+  background:var(--card-bg);
+  width:min(420px, 96%);
+  padding:clamp(1.25rem, 3.5vw, 2.25rem);
+  border-radius:var(--radius);
+  box-shadow:0 10px 30px rgba(2,6,23,0.08);
+  text-align:center;
+  transition:transform 200ms ease, box-shadow 200ms ease;
+}
+.card:focus-within{transform:translateY(-4px);box-shadow:0 16px 40px rgba(2,6,23,0.12)}
+
+h1{
+  margin:0 0 .35rem 0;
+  font-size:clamp(1.125rem, 3.5vw, 1.5rem);
+}
+.subtitle{
+  margin:0 0 .85rem 0;
+  color:var(--muted);
+  font-size:clamp(.85rem, 2.2vw, .95rem);
+}
+
+.actions{
+  display:grid;
+  gap:.6rem;
+  margin-top: .6rem;
+}
+
+.btn{
+  display:inline-block;
+  width:100%;
+  padding:clamp(.6rem, 2.2vw, .85rem);
+  border-radius:10px;
+  border:0;
+  font-size:clamp(.95rem, 2.2vw, 1rem);
+  cursor:pointer;
+  font-weight:600;
+  color: #fff;
+  background:var(--muted);
+  transition:transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+}
+
+.btn:active{transform:translateY(1px)}
+.btn:focus{outline:3px solid rgba(45,156,219,0.18); outline-offset:3px}
+
+.btn--cliente{background:linear-gradient(180deg,var(--primary), #1976a8)}
+.btn--gestor{background:linear-gradient(180deg,var(--success), #276b46)}
+
+.note{
+  display:block;
+  margin-top:1rem;
+  color:var(--muted);
+  font-size:.8rem;
+}
+
+/* Small screens: make actions horizontal on very wide devices */
+@media (min-width:720px){
+  .actions{grid-template-columns:1fr 1fr; gap:0.75rem}
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce){
+  .card, .btn{transition:none}
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark){
+  :root{--bg:#0b1220; --card-bg:#071025; --text:#e6eef8; --muted:#9aa6b2}
+}
