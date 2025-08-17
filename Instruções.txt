@@ -1,0 +1,39 @@
+LAB Eng Software
+
+Backend: 	- Java;
+			- Dot net + c#;
+			- Node;
+PHP (Não)
+
+Frontend: Qualquer coisa que rode em um navegador, ser mais simples possível para não ter problemas (Aplicação deve ser WEB);
+Banco de Dados deve ser relacional;
+
+Arquitetura MVC;
+
+Documento DVP*;
+
+Entrega do PPT contendo a atualização a cada entrega;
+	- Relatar os integrantes, objetivo, tecnologias envolvidas;
+	
+*Entrega 1:
+	- Capa, título, grupo;
+	- Entrega 18/09 - Kanban;
+	- Tema;
+	- Tecnologia;
+	- Protótipo;
+	- Estimativa;
+	
+*Entrega 2;
+	- Entrega 25/08 - Kanban;
+
+E-Commerce:	- Deve ser de coisas físicas devido a restrições nos requisitos;
+			- Implementar uma IA para recomendação de produtos, deve ser utilizado a base de dados do programa;
+			- Não obrigatório Login e senha para o usuário; (Usuario e adm pode ser em links diferentes);
+			- Necessário o CRUD de cliente no mínimo;
+				
+Cronograma:
+	1 - 18/08 | Tema, Grupo, tecnologia, protótipo CRUD Cliente(HTML e funcional na parte do Frontend);
+	2 - 25/08 | Estimativa das Atividades detalhadas e Protótipo do sistema Completo(Todas as telas que o sistema terá{entre 10 e 40 +/-});
+	3 - 08/09 | CRUD Cliente implementado;
+	4 - 15/09 | Caso de testes do requisito da IA;
+	5 - 22/09 | Testes automatizados do CRUD Cliente; (Selenium, cypress ou robot);
