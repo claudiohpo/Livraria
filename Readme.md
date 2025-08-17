@@ -11,7 +11,7 @@
 
 **Disciplina:** Engenharia de Software 🧑‍🏫  
 **Faculdade:** FATEC Mogi das Cruzes 🏫  
-**Autores:** Cláudio Oliveira & Mariana Gomes Teixeira 👥
+**Autores:** Cláudio Oliveira & Mariana Teixeira 👥
 
 ---
 
