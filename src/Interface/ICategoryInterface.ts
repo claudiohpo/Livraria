@@ -1,6 +1,5 @@
-interface ICategoryRequest {
-    id?: string;
-    name: string;
-    description: string;
+export interface ICategoryRequest {
+  name: string;
+  description?: string;
+  active?: boolean;
 }
-export { ICategoryRequest }; // Exporta a interface ICategoryRequest

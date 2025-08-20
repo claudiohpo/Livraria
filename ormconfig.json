@@ -4,7 +4,7 @@
    "port": 5432,
    "username": "postgres",
    "password": "root",
-   "database": "app",
+   "database": "livraria",
    "synchronize": true,
    "logging": false,
    "entities": [

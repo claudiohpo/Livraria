@@ -1,27 +1,29 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { v4 as uuid } from "uuid";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from "typeorm";
 
 @Entity("categories")
-class Category {
-    @PrimaryColumn()
-    readonly id!: string; //! = campo obrigatorio
+export class Category {
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-    @Column()
-    name!: string;
+  @Column({ unique: true })
+  name!: string;
 
-    @Column()
-    description!: string;
+  @Column({ type: "text", nullable: true })
+  description?: string;
 
-    @CreateDateColumn()
-    created_at!: Date;
+  // opcional: flag para inativar categoria sem excluir
+  @Column({ default: true })
+  active!: boolean;
 
-    @UpdateDateColumn()
-    updated_at!: Date;
+  @CreateDateColumn()
+  created_at!: Date;
 
-    constructor() {
-        if (!this.id) {
-            this.id = uuid();
-        } // O id é gerado automaticamente se não for fornecido
-    }
+  @UpdateDateColumn()
+  updated_at!: Date;
 }
-export { Category };

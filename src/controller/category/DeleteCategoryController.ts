@@ -1,13 +1,20 @@
 import { Request, Response } from "express";
 import { DeleteCategoryService } from "../../service/Category/DeleteCategoryService";
 
-class DeleteCategoryController {
-    async handle(request: Request, response: Response){
-    const id = request.params.id;
-    const deleteCategoryService = new DeleteCategoryService(); // Cria um objeto de serviço
-    const msg = await deleteCategoryService.execute(id); // Chama o método execute do serviço
+export class DeleteCategoryController {
+  async handle(request: Request, response: Response) {
+    try {
+      const { id } = request.params;
+      const service = new DeleteCategoryService();
 
-        response.json({message: "Registro " + id + "excluido com Sucesso!"});  // Retorna uma mensagem de sucesso
+      const msg = await service.execute(Number(id));
+
+      return response.status(200).json({ message: msg });
+    } catch (error) {
+      if (error instanceof Error) {
+        return response.status(400).json({ message: error.message });
+      }
+      return response.status(500).json({ message: "Erro interno do servidor" });
     }
+  }
 }
-export { DeleteCategoryController };

@@ -1,20 +1,23 @@
 import { getCustomRepository } from "typeorm";
-import { CategoriesRepositories } from "../../repositories/CategoriesRepositories";
+import { CategoriesRepository } from "../../repositories/CategoriesRepository";
 
-class DeleteCategoryService {
-    async execute(id: string) {
-        const categoriesRepositories = getCustomRepository(CategoriesRepositories); // Cria uma instância do repositório de categorias
-        const categoryAlreadyExists = await categoriesRepositories.findOne({ id }); // Verifica se a categoria existe
+export class DeleteCategoryService {
+  async execute(id: number): Promise<string> {
+    const categoriesRepo = getCustomRepository(CategoriesRepository);
 
-        if (!categoryAlreadyExists) { // Se não existir, lança um erro
-            throw new Error("Categoria não existe!");
-        }
-        await categoriesRepositories.delete(id); // Deleta a categoria do banco de dados
-
-        var msg = {
-            message: "Categoria " + id + " deletada com Sucesso!!" // Retorna uma mensagem de sucesso
-        };
-        return msg;
+    const category = await categoriesRepo.findOne(id);
+    if (!category) {
+      throw new Error("Categoria não encontrada.");
     }
+
+    // capture os dados antes de remover
+    const categoryId = category.id;
+    const categoryName = category.name;
+
+    // Se desejar, verifique vínculos com livros aqui antes de remover.
+    await categoriesRepo.remove(category);
+
+    // montar a mensagem sem aspas internas para evitar escapes no JSON
+    return `Categoria ${categoryName} (id: ${categoryId}) removida com sucesso.`;
+  }
 }
-export { DeleteCategoryService };

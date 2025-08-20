@@ -1,13 +1,14 @@
 import { getCustomRepository } from "typeorm";
-import { CategoriesRepositories } from "../../repositories/CategoriesRepositories";
+import { CategoriesRepository } from "../../repositories/CategoriesRepository";
 
-class ListCategoryService{
-    async execute(){
-        const categoriesRepositories = getCustomRepository(CategoriesRepositories);
+export class ListCategoryService {
+  async execute(onlyActive = false) {
+    const categoriesRepo = getCustomRepository(CategoriesRepository);
 
-        const categories = await categoriesRepositories.find();
-            
-        return categories;
+    if (onlyActive) {
+      return await categoriesRepo.find({ where: { active: true }, order: { name: "ASC" } });
     }
+
+    return await categoriesRepo.find({ order: { name: "ASC" } });
+  }
 }
-export { ListCategoryService };

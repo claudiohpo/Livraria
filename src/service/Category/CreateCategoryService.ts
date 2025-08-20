@@ -1,30 +1,28 @@
-import { ICategoryRequest } from "../../Interface/ICategoryInterface";
-import { CategoriesRepositories } from "../../repositories/CategoriesRepositories";
 import { getCustomRepository } from "typeorm";
+import { CategoriesRepository } from "../../repositories/CategoriesRepository";
+import { ICategoryRequest } from "../../Interface/ICategoryInterface";
 
-class CreateCategoryService {
-    async execute({ name, description }: ICategoryRequest) {
-        if(!name) {
-            throw new Error("Nome não pode estar vazio!");
-        }
-
-        if(!description) {
-            throw new Error("Descrição não pode ser vazia!");
-        }
-
-        const categoriesRepositories = getCustomRepository(CategoriesRepositories);
-        const categoryAlreadyExists = await categoriesRepositories.findOne({ name });
-        if (categoryAlreadyExists) {
-            throw new Error("Categoria já existe!");
-        }
-        const category = categoriesRepositories.create({
-            name,
-            description,
-        });
-
-        await categoriesRepositories.save(category);
-        
-        return category;
+export class CreateCategoryService {
+  async execute({ name, description, active }: ICategoryRequest) {
+    if (!name || name.trim().length === 0) {
+      throw new Error("Nome da categoria é obrigatório.");
     }
+
+    const categoriesRepo = getCustomRepository(CategoriesRepository);
+
+    const exists = await categoriesRepo.findOne({ where: { name } });
+    if (exists) {
+      throw new Error("Categoria com esse nome já existe.");
+    }
+
+    const category = categoriesRepo.create({
+      name: name.trim(),
+      description: description?.trim(),
+      active: active === undefined ? true : Boolean(active),
+    });
+
+    await categoriesRepo.save(category);
+
+    return category;
+  }
 }
-export { CreateCategoryService };
