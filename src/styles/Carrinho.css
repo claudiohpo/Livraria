@@ -1,0 +1,139 @@
+:root {
+  --primary-color: #752512;
+  --secondary-color: #A73A21;
+  --tertiary-color: #C65338;
+  --quaternary-color: #FEAA80;
+  --quinary-color: #FDBC9B;
+  --senary-color: #FFEBE1;
+  --septenary-color-vibrant: #ee5e3a;
+}
+
+
+.carrinho-container {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.carrinho-container h1{
+    color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.carrinho-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #e4dddd;
+  font-weight: bold;
+}
+
+.carrinho-coluna-produto {
+  flex: 2;
+  text-align: left;
+}
+
+.carrinho-coluna-preco,
+.carrinho-coluna-quantidade,
+.carrinho-coluna-total {
+  flex: 1;
+  text-align: center;
+}
+
+.carrinho-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.carrinho-imagem {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 15px;
+}
+
+.carrinho-detalhes-produto {
+  display: flex;
+  flex-direction: column;
+}
+
+.carrinho-detalhes-produto h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.carrinho-detalhes-produto p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.carrinho-remover {
+  background-color: #e2c6bb;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  width: 15%
+}
+
+.carrinho-remover:hover {
+  background-color: var(--septenary-color-vibrant);
+}
+
+.carrinho-quantidade {
+  width: 60px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.carrinho-subtotal {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.carrinho-subtotal-label {
+  margin-right: 50%;
+}
+
+.carrinho-subtotal-valor {
+  color: #752512;
+}
+
+.carrinho-finalizar{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; 
+}
+
+.carrinho-botao {
+  background-color: #752512;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 40%;
+  text-align: center;
+  align-content:flex-end
+}
+
+.carrinho-botao:hover {
+  background-color: #A73A21;
+}

@@ -1,0 +1,202 @@
+/* Estilos gerais da tela */
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+
+:root{
+  --primary-color: #752512;
+  --secondary-color: #A73A21;
+  --tertiary-color: #C65338;
+  --quaternary-color: #FEAA80;
+  --quinary-color: #FDBC9B;
+  --senary-color: #FFCEB6;
+  --septenary-color-vibrant: #ee5e3a;
+}
+
+.consulta-clientes {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+  
+h1{
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  color: var(--primary-color) !important;
+  margin-bottom: 20px !important;
+
+}
+
+
+/* Estilos das abas */
+.abas-filtro {
+  display: flex;
+  margin-bottom: 30px;
+  justify-content:center;
+  display: flex
+}
+
+.abas-filtro button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #ffddcc;
+  color: var(--primary-color);
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  width: 170px;
+}
+
+.abas-filtro button.ativo {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.abas-filtro button:hover {
+  background-color: var(--quaternary-color);
+}
+
+
+/* Estilos do campo de pesquisa */
+.campo-pesquisa {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  margin-bottom: 40px;
+}
+
+.campo-pesquisa input {
+  width: 30%; 
+  padding: 10px;
+  border: 1px solid var(--senary-color);
+  border-radius: 18px;
+  font-size: 16px;
+  outline: none;
+  color: var(--primary-color);
+}
+
+.campo-pesquisa input::placeholder {
+  color: #555;
+}
+
+.campo-pesquisa .botao-lupa {
+  padding: 10px;
+  border: 0px solid #ccc;
+  border-left: none; /* Remove a borda esquerda para unir com o input */
+  border-radius: 0 8px 8px 0; /* Bordas arredondadas apenas à direita */
+  background-color: #f9f9f9;
+  cursor: pointer;
+  justify-content:center;
+  display: flex
+}
+
+.campo-pesquisa .botao-lupa:hover {
+  background-color: #ffddcc;
+}
+
+.campo-pesquisa .lupa {
+  width: 20px; /* Ajuste o tamanho da lupa */
+  height: 20px;
+}
+
+
+@media (max-width: 768px) {
+  .campo-pesquisa input {
+    width: 80%; /* Aumenta a largura em telas menores */
+  }
+
+  .campo-pesquisa .lupa {
+    right: 10%; /* Ajusta a posição da lupa em telas menores */
+  }
+}
+
+
+
+/* Contêiner da tabela */
+.celula-acoes {
+  display: flex;
+  gap: 10px;
+}
+
+.botao-acao {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.botao-acao:hover {
+  background-color: #FDBC9B;
+}
+
+.acao-imagem {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+
+.tabela-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto; /* Centraliza o contêiner */
+}
+
+/* Estilos da tabela */
+.tabela-clientes {
+  justify-content:center;
+  align-content:center;
+  display: flex-box;
+  width: 90%;
+  border-collapse: collapse;
+  background-color: #fff2eb;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tabela-clientes th,
+.tabela-clientes td {
+  padding: 15px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--senary-color);
+
+}
+
+.tabela-clientes th {
+  background-color: #FFCEB6;
+  color: #752512;
+  font-weight: none;
+
+}
+
+.tabela-clientes tbody tr:hover {
+  background-color: #ffddcc;
+}
+
+.tabela-clientes tbody tr:last-child td {
+  border-bottom: none; 
+}
+
+last-child td{
+  padding: 15px 0px !important;
+}
+/* Estilos para as imagens de ação */
+.acao-imagem {
+  width: 24px; /* Ajuste o tamanho conforme necessário */
+  height: 24px;
+  transition: opacity 0.3s ease;
+}
+
+.acao-imagem:hover {
+  opacity: 0.8; /* Efeito de hover */
+}
+
+
+
+

@@ -1,0 +1,349 @@
+:root {
+  --primary-color: #752512;
+  --secondary-color: #A73A21;
+  --tertiary-color: #C65338;
+  --quaternary-color: #FEAA80;
+  --quinary-color: #FDBC9B;
+  --senary-color: #FFEBE1;
+  --septenary-color-vibrant: #ee5e3a;
+}
+
+.pagamento-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.pagamento-container h1 {
+  font-size: 29px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  font-weight:normal
+}
+
+.pagamento-container h2{
+  font-weight:normal;
+  font-size: 20px;
+
+  color: var(--primary-color);
+
+}
+.pagamento-container h3{
+  font-weight:normal;
+  font-size: 15px;
+
+  color: var(--primary-color);
+
+}
+.pagamento-layout {
+  display: flex;
+  gap: 20px;
+}
+
+.coluna-esquerda,
+.coluna-direita {
+  flex: 1;
+}
+
+.coluna-esquerda {
+  max-width: 60%;
+}
+
+.coluna-direita {
+  max-width: 40%;
+}
+
+
+.formulario-contato,
+.forma-pagamento,
+.frete {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.cupom,
+.resumo-carrinho{
+  background-color: #FFEBE1;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.resumo-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.resumo-imagem {
+  width: 70px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.resumo-detalhes {
+  flex: 1;
+}
+
+.resumo-detalhes p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.resumo-total {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.resumo-total p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.resumo-total strong {
+  color: var(--primary-color);
+}
+
+.formulario-contato input,
+.forma-pagamento select,
+.frete select,
+.cupom input {
+  width: 97%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.cupom {
+  display: flex;
+  gap: 10px;
+}
+
+
+.cupom input {
+  flex: 1;
+}
+
+.cupom button {
+  padding: 5px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cupom button:hover {
+  background-color: var(--secondary-color);
+}
+
+.finalizar-compra {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.finalizar-compra:hover {
+  background-color: var(--secondary-color);
+}
+
+.cartao-formulario {
+  margin-top: 10px;
+}
+
+.cartao-formulario input,
+.cartao-formulario select {
+  width: 80%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+
+.cartao-label {
+  display: flex;
+  
+}
+.cartao-salvo {
+  display: flex;
+  align-items: start;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  flex-direction: column; /* Alinha o conteúdo em coluna */
+  gap: 5px; /* Espaçamento entre o cartão e o campo de valor */
+}
+
+.cartao-info {
+  margin-left: 10px; /* Mantém o espaço entre o rádio e o nome do cartão */
+  white-space: nowrap;
+}
+
+.cartao-salvo input {
+  width: 100%; /* Assegura que o campo de valor a pagar ocupe toda a largura disponível */
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+
+
+
+
+
+
+
+.bandeiras-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.bandeira-img {
+  width: 50px;
+  height: auto;
+}
+
+.cartao-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cartao-formulario input,
+.cartao-formulario select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.checkbox-salvar-cartao {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.checkbox-salvar-cartao label {
+  font-size: 14px;
+  color: #333;
+}
+
+
+
+
+
+
+
+
+.endereco-entrega {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.endereco-entrega input,
+.endereco-entrega select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.endereco-entrega button,
+.cartao-formulario button{
+  padding: 10px 20px;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  font-weight:bold;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.endereco-entrega button:hover,
+.cartao-formulario button:hover{
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.cartao-salvo input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+
+.checkbox-pagamento-multiplo {
+  margin-top: 15px;
+}
+
+.checkbox-pagamento-multiplo label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Estilo do span (caixa de seleção) */
+.checkbox-pagamento-multiplo span {
+  width: 15px;
+  height: 15px;
+  border: 2px solid var(--quaternary-color);
+  border-radius: 20%;
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+
+/* Quando o checkbox está marcado, altera a cor do fundo */
+.checkbox-pagamento-multiplo input[type="checkbox"]:checked + span {
+  background-color: var(--quaternary-color);
+  border-color: var(--quaternary-color); /* Ajusta a borda quando o checkbox é selecionado */
+}
+
+/* Criar o círculo interno quando o checkbox é marcado */
+.checkbox-pagamento-multiplo input[type="checkbox"]:checked + span::before {
+  width: 7px;
+  height: 7px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centraliza o círculo */
+}

@@ -1,0 +1,168 @@
+:root {
+  --primary-color: #752512;
+  --secondary-color: #A73A21;
+  --tertiary-color: #C65338;
+  --quaternary-color: #FEAA80;
+  --quinary-color: #FDBC9B;
+  --senary-color: #FFEBE1;
+  --septenary-color-vibrant: #ee5e3a;
+}
+
+
+.campo-pesquisa {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    margin-bottom: 40px;
+  }
+  
+  /* Input */
+  .campo-pesquisa input {
+    width: 30%;
+    padding: 10px;
+    border: 1px solid var(--senary-color);
+    border-radius: 18px;
+    font-size: 16px;
+    outline: none;
+    color: var(--primary-color);
+    transition: border-color 0.3s;
+  }
+  
+  .campo-pesquisa input::placeholder {
+    color: #555;
+  }
+  
+  .campo-pesquisa input:focus {
+    border-color: var(--primary-color);
+  }
+  
+  /* Botões: lupa e filtro */
+  .botao-lupa,
+  .botao-filtro {
+    background: none !important;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 40% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+  }
+  
+  .botao-lupa:hover,
+  .botao-filtro:hover {
+    background-color: #FFEBE1 !important;
+  }
+  
+  /* Ícones */
+  .lupa,
+  .icone-filtro {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+  }
+  .painel-filtros-popup {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 6px;
+    min-width: 250px;
+    max-width: 100%;
+  }
+  
+  /* Filtros */
+  .filtro-grupo {
+    margin-bottom: 12px;
+  }
+  
+  .filtro-grupo strong {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .filtro-grupo label {
+    display: block;
+    font-size: 14px;
+    color: #444;
+    margin-left: 8px;
+    margin-bottom: 4px;
+    cursor: pointer;
+  }
+  
+  .filtro-grupo input[type="radio"],
+  .filtro-grupo input[type="checkbox"] {
+    margin-right: 6px;
+  }
+  
+
+  /* Estilos para os checkboxes */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+}
+
+.checkbox-custom {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-right: 8px;
+  position: relative;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+  background-color: var(--tertiary-color);
+  border-color: var(--tertiary-color);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+  content: "✓";
+  position: absolute;
+  color: white;
+  font-size: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Estilo para o cabeçalho dos filtros */
+.filtro-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.botao-limpar {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 5px;
+}
+
+.botao-limpar:hover {
+  color: var(--tertiary-color);
+  text-decoration: underline;
+}

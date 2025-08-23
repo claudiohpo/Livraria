@@ -1,0 +1,85 @@
+:root {
+  --primary-color: #752512;
+  --secondary-color: #A73A21;
+  --tertiary-color: #C65338;
+  --quaternary-color: #FEAA80;
+  --quinary-color: #FDBC9B;
+  --senary-color: #FFEBE1;
+  --septenary-color-vibrant: #ee5e3a;
+}
+
+/* Contêiner principal para organizar filtros e cards */
+.main-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 50px 10%;
+}
+
+.shop-titulo{
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-top: 40px;
+}
+/* Estilos para os cards */
+.cards-container {
+  margin-left: 10px; /* Margem à esquerda para acomodar os filtros */
+  padding: 20px;
+  flex: 1; /* Ocupa o restante do espaço */
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Espaçamento entre os cards */
+  height: 50px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Adiciona transição */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Efeito de levantar */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra mais intensa */
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.card-nome {
+  font-size: 18px;
+  margin: 8px 0;
+  text-align: center;
+}
+
+.card-preco {
+  font-size: 16px;
+  color: #888;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column; /* Em dispositivos móveis, os filtros ficam acima dos cards */
+  }
+
+  .filtros-container {
+    width: 100%; /* Ocupa toda a largura em dispositivos móveis */
+    position: relative; /* Remove a posição fixa em dispositivos móveis */
+    height: auto; /* Altura automática */
+    padding: 15px;
+  }
+
+  .cards-container {
+    margin-left: 0; /* Remove a margem à esquerda em dispositivos móveis */
+    padding: 15px;
+  }
+}

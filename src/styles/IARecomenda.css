@@ -1,0 +1,188 @@
+:root {
+  --primary-color: #752512;
+  --secondary-color: #A73A21;
+  --tertiary-color: #C65338;
+  --quaternary-color: #FEAA80;
+  --quinary-color: #FDBC9B;
+  --senary-color: #FFEBE1;
+  --septenary-color-vibrant: #ee5e3a;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 80vh; /* Manter altura para o chat */
+  max-width: 900px; /* Limitar largura em telas grandes */
+  margin: 50px auto 10px auto; /* Centralizar e ajustar margens */
+  padding: 20px;
+  background-color: var(--senary-color); /* Usar variável de cor */
+  border-radius: 15px; /* Arredondamento mais sutil */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra mais pronunciada */
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-height: 0; /* Garante que o flex item possa encolher */
+}
+
+
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: var(--senary-color);
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: var(--quaternary-color);
+  border-radius: 4px;
+}
+
+.message-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 80%;
+  margin: 0;
+  position: relative; /* Adicionar para posicionamento absoluto dos ícones */
+  padding-left: 55px; /* Espaço para o ícone da IA */
+  padding-right: 55px; /* Espaço para o ícone do usuário */
+}
+
+.message-container.user {
+  flex-direction: row-reverse;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%; /* Permitir que a bolha ocupe a largura total do container */
+  padding: 12px 18px; /* Ajustar padding */
+  border-radius: 20px; /* Arredondamento mais suave */
+}
+
+
+
+.message.user {
+  background-color: var(--quinary-color);
+  color: var(--primary-color);
+  align-self: flex-end;
+}
+
+.message.ia {
+  background-color: var(--quaternary-color);
+  color: var(--primary-color);
+  align-self: flex-start;
+}
+
+.message-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  position: absolute; /* Posicionamento absoluto */
+  top: 0; /* Alinhar ao topo da mensagem */
+}
+
+.message-container.ia .message-icon {
+  left: 0; /* Ícone da IA à esquerda */
+}
+
+.message-container.user .message-icon {
+  right: 0; /* Ícone do usuário à direita */
+}
+
+.produtos-sugeridos {
+  display: flex;
+  flex-wrap: wrap; /* Permitir que os cards quebrem a linha */
+  gap: 15px; /* Aumentar o espaçamento entre os cards */
+  justify-content: center; /* Centralizar os cards */
+  margin-top: 10px; /* Adicionar margem superior */
+}
+
+.imagens-produtos-sugeridos{
+  display: flex; /* Usar flex para melhor controle */
+  flex-wrap: wrap; /* Permitir que os cards quebrem a linha */
+  justify-content: center; /* Centralizar os cards */
+  gap: 15px; /* Espaçamento entre os cards */
+  margin: 0; /* Remover margens fixas */
+}
+
+.veja-mais {
+  text-align: right;
+  align-content: end;
+  margin: 9px 5% 0 1%;
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.produto-card {
+  border: 1px solid var(--quinary-color);
+  border-radius: 10px;
+  padding: 10px;
+  width: 160px; /* Aumentar um pouco a largura */
+  flex-shrink: 0; /* Evitar que o card encolha */
+  cursor: pointer;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Adicionar uma sombra sutil */
+  transition: transform 0.2s ease-in-out;
+}
+
+.produto-card:hover {
+  transform: translateY(-3px); /* Efeito de hover */
+}
+
+.produto-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.veja-mais {
+  display: inline;
+  margin-top: 10px;
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0 0 0; /* Ajustar margem para melhor espaçamento */
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid var(--quinary-color);
+  font-size: 16px;
+}
+.chat-input input:focus {
+  border-color: var(--tertiary-color); /* Ou qualquer cor que você preferir */
+  outline: none; /* Opcional: remove o contorno padrão ao focar no input */
+}
+
+.chat-input button {
+  padding: 10px 20px;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 25px; /* Mais arredondado */
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.chat-input button:hover {
+  background-color: var(--tertiary-color);
+}
+
+
+

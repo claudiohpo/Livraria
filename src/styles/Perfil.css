@@ -1,0 +1,270 @@
+:root {
+  --primary-color: #752512;
+  --secondary-color: #A73A21;
+  --tertiary-color: #C65338;
+  --quaternary-color: #FEAA80;
+  --quinary-color: #FDBC9B;
+  --senary-color: #FFEBE1;
+  --septenary-color-vibrant: #ee5e3a;
+}
+
+.perfil-container {
+  font-family: Arial, sans-serif;
+
+  min-height: 100vh;
+}
+
+.perfil-content {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+ 
+  
+}
+.perfil-loading, .perfil-error {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+}
+
+.perfil-error {
+  color: #A73A21;
+}
+
+.perfil-error button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #C65338;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.perfil-content h1 {
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Estilos das abas */
+.perfil-abas {
+  display: flex;
+  margin-bottom: 30px;
+  justify-content:center;
+  display: flex
+}
+
+.perfil-abas button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #ffddcc;
+  color: var(--primary-color);
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  width: 170px;
+}
+
+.perfil-abas button.ativo {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.perfil-abas button:hover {
+  background-color: var(--quaternary-color);
+}
+
+
+.perfil-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.perfil-dados,
+.perfil-endereco,
+.perfil-endereco-entrega,
+.perfil-login {
+
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.perfil-container h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.perfil-input-group {
+
+  margin: 1rem ;
+}
+
+.perfil-input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.perfil-input-group input,
+.perfil-input-group select,
+.perfil-input-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 0 solid var(--senary-color);
+  border-bottom: 1px  solid var(--primary-color);
+  font-size: 1rem;
+}
+
+.perfil-input-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.perfil-input-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.perfil-input-row .perfil-input-group {
+  flex: 1;
+}
+
+.perfil-checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.perfil-checkbox-group input {
+  margin-right: 0.5rem;
+}
+
+.perfil-container input:focus,
+.perfil-container select:focus{
+  /* border: 1px solid var(--secondary-color); */
+  background-color: #FFEBE1;
+  border-radius:10px;
+  outline: none;
+}
+
+/* .perfil-botoes {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.perfil-botao-editar,
+.perfil-botao-cancelar {
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.perfil-botao-editar {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.perfil-botao-cancelar {
+  background-color: #f44336;
+  color: white;
+}
+ */
+
+/* Estilos para os botões de ação */
+ .perfil-botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+ .perfil-botoes button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+ .perfil-botoes button[type="submit"] {
+  background-color:  var(--tertiary-color);
+  color: #fff;
+}
+
+ .perfil-botoes button[type="submit"]:hover {
+  background-color:  var(--secondary-color);
+}
+
+ .perfil-botoes button[type="button"] {
+  background-color:  var(--senary-color);
+  color: var(--primary-color);
+}
+
+ .perfil-botoes button[type="button"]:hover {
+  background-color: var(--quaternary-color);
+}
+
+
+.perfil-conta-acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.perfil-conta-acoes button {
+  padding: 0.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.perfil-conta-acoes button:hover {
+  color: var(--primary-color);
+}
+
+.perfil-botao-excluir {
+  color: #f44336 !important;
+}
+
+.perfil-produtos,
+.perfil-comunidade {
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .perfil-content {
+    padding: 1rem;
+  }
+
+  .perfil-input-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .perfil-botoes {
+    flex-direction: column;
+  }
+
+  .perfil-botao-editar,
+  .perfil-botao-cancelar {
+    width: 100%;
+  }
+}

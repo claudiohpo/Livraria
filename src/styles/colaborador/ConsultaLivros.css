@@ -1,0 +1,224 @@
+/* Estilos gerais da tela */
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+
+:root{
+  --primary-color: #752512;
+  --secondary-color: #A73A21;
+  --tertiary-color: #C65338;
+  --quaternary-color: #FEAA80;
+  --quinary-color: #FDBC9B;
+  --senary-color: #FFCEB6;
+  --septenary-color-vibrant: #ee5e3a;
+}
+
+
+.consulta-livros {
+  padding: 20px 40px;
+  max-width: 1300px;
+  margin: 10px auto;
+  font-family: 'Inter', sans-serif;
+}
+
+
+.livros-container {
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px,270px));
+  grid-template-rows: auto;
+  gap: 15px;
+  margin-top: 30px;
+
+}
+
+
+
+/* ProdutoCard */
+.livros-container .card {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  min-width: 50%;
+  max-width: 70%;
+  position: relative; /* Adicionado para o overlay */
+}
+
+.livros-container .card.out-of-stock::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 0, 0, 0.2); /* Overlay avermelhado */
+  z-index: 1; /* Garante que o overlay fique acima do conteúdo do card */
+  border-radius: 12px; /* Para corresponder ao border-radius do card */
+}
+
+.livros-container .card.out-of-stock {
+  pointer-events: none; /* Desabilita cliques no card */
+}
+
+.produto-card :hover {
+  transform: scale(1.03);
+}
+
+.produto-card img {
+  width: 70%;
+  height: auto;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.produto-info {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card-info .card-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #1c1c1c;
+  margin: 10px;
+  height: 36px;
+  overflow: hidden;
+}
+
+.produto-info p {
+  font-size: 12px;
+  color: #555;
+  margin: 0;
+}
+
+.produto-preco {
+  font-size: 16px;
+  font-weight: bold;
+  color: #e53935;
+  margin-top: 6px;
+}
+
+/* Ações */
+.acoes-livro {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+}
+
+.btn-editar, .btn-excluir {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* .btn-editar {
+  background-color:  var(--quaternary-color);
+  color: white;
+} */
+
+.btn-excluir {
+  font-weight: bold;
+  color: var(--tertiary-color);
+}
+
+.btn-editar:hover {
+  background-color: var(--senary-color);
+}
+
+.btn-editar {
+  background-color: var(--tertiary-color);
+  color: white;
+}
+
+.btn-excluir:hover {
+  background-color: var(--primary-color );
+  color:white
+}
+
+/* AbasFiltro */
+.abas-container {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.aba {
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  background-color: #f3f3f3;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #333;
+}
+
+.aba.ativa {
+  background-color: #b9513a;
+  color: white;
+}
+
+/* CampoPesquisa */
+.campo-pesquisa-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.campo-pesquisa-container input {
+  width: 40%;
+  padding: 10px 16px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  outline: none;
+}
+
+/* Paginação (se houver) */
+.paginacao {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.paginacao button {
+  margin: 0 6px;
+  padding: 6px 12px;
+  border: none;
+  background-color: #eee;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.paginacao .ativo {
+  background-color: #b9513a;
+  color: white;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .livros-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .campo-pesquisa-container input {
+    width: 80%;
+  }
+}
+
+@media (max-width: 480px) {
+  .livros-container {
+    grid-template-columns: 1fr;
+  }
+}

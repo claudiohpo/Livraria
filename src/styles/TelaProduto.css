@@ -1,0 +1,261 @@
+.produto-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+.produto-imagens {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start; /* Alinha as miniaturas ao topo */
+  gap: 20px; /* Espaçamento entre as miniaturas e a imagem principal */
+}
+
+.produto-miniaturas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.miniatura {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+}
+
+.produto-imagem-principal img {
+  width: 300px;
+  border-radius: 8px;
+}
+
+.produto-detalhes {
+  flex: 1;
+  max-width: 500px;
+  text-align: left; /* Alinha todo o conteúdo à esquerda */
+}
+
+.produto-detalhes h1 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: left; /* Já está assim, mas vamos reforçar */
+  font-weight: normal;
+  width: 100%; /* Adicione isso */
+  display: block; /* Adicione isso */
+  margin-left: 0; /* Adicione isso */
+  padding-left: 0; /* Adicione isso */
+}
+
+.produto-preco {
+  font-size: 1.5rem;
+  color: #A73A21;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.produto-estoque {
+  font-size: 1rem;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.opcoes-tamanho {
+  display: flex;
+  gap: 10px;
+  margin: 10px 10px 20px 5px;
+}
+
+.tamanho-botao {
+  padding: 10px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.tamanho-botao:hover {
+  background-color: #f0f0f0;
+  border-color: #752512;
+}
+
+.tamanho-botao.ativo {
+  background-color: #A73A21;
+  color: white;
+  border: none;
+}
+
+.tamanho-botao:disabled, .produto-botao:disabled{
+  background-color: #f0f0f0 !important;
+  color: #ccc;
+  cursor: not-allowed;
+  border-color: #ddd;
+}
+
+.quantidade-controle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 10px 30px 5px;
+}
+
+.quantidade-controle button {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.produto-botao {
+  background-color: #A73A21;
+  color: white;
+  padding: 10px 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.produto-botao:hover {
+  background-color: #752512;
+}
+
+.produto-info p {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.produto-seguranca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.produto-seguranca img {
+  height: 90px;
+}
+
+.produto-beneficios {
+  display: flex;
+  justify-content: space-around;
+  margin: 40px 60px;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.produto-beneficios div {
+  text-align: center;
+}
+
+.produto-beneficios img {
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.produto-beneficios p {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.produto-beneficios span {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.produto-imagens {
+  display: flex;
+  gap: 20px;
+}
+
+.produto-miniaturas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.miniatura {
+  width: 60px;
+  height: 80px;
+  object-fit: cover;
+  border: 2px solid #FEAA80;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.miniatura:hover {
+  border-color: #a73a21;
+}
+
+.produto-descricao {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 1200px;
+  width: 90%;
+  box-sizing: border-box;
+}
+
+.produto-descricao-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.produto-descricao h2 {
+  font-size: 1.3rem;
+  color: #333;
+  margin: 0;
+}
+
+.produto-descricao-conteudo {
+  margin-top: 15px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.produto-descricao p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.produto-descricao strong {
+  font-weight: bold;
+}
+
+.seta-descricao {
+  transition: transform 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.seta-descricao.virada {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 768px) {
+  .produto-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .produto-imagens {
+    flex-direction: column;
+  }
+  .produto-imagem-principal img {
+    width: 100%;
+  }
+}

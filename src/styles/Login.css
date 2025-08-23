@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+
+:root {
+  --primary-color: #752512;
+  --secondary-color: #A73A21;
+  --tertiary-color: #C65338;
+  --quaternary-color: #FEAA80;
+  --quinary-color: #FDBC9B;
+  --senary-color: #FFEBE1;
+  --septenary-color-vibrant: #ee5e3a;
+}
+
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa toda a altura da tela */
+}
+
+@media (max-width: 670px) {
+  .container {
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.login-section {
+  max-width: 600px;
+  padding: 40px 100px;
+  background-color: #FFEBE1;
+  border-radius: 50px;
+  text-align: center;
+}
+
+.login-section h2 {
+  font-size: 24px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.user-type {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Oculta o input radio nativo */
+.radio-label input[type="radio"] {
+  display: none;
+}
+
+/* Estilo do radio personalizado */
+.radio-custom {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--quaternary-color);
+  border-radius: 50%;
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+
+.radio-label input[type="radio"]:checked + .radio-custom {
+  border-color: var(--tertiary-color);
+}
+
+.radio-label input[type="radio"]:checked + .radio-custom::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background-color: var(--tertiary-color);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centraliza o ponto */
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-form input {
+  padding: 10px;
+  border: 1px solid var(--senary-color);
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  color: var(--primary-color);
+}
+
+.login-form input:focus {
+  border-color: var(--tertiary-color);
+}
+
+.login-form a {
+  text-align: right;
+  font-size: 14px;
+  color: var(--tertiary-color);
+  text-decoration: none;
+}
+
+.login-form a:hover {
+  text-decoration: underline;
+  color: var(--quaternary-color);
+}
+
+.login-form button {
+  background-color: var(--secondary-color);
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: var(--quaternary-color);
+  color: var(--primary-color);
+}
+
+.login-section p {
+  font-size: 14px;
+  color: #555;
+}
+
+.login-section p a {
+  color: var(--tertiary-color);
+  text-decoration: none;
+}
+
+.login-section p a:hover {
+  text-decoration: underline;
+  color: var(--quaternary-color);
+}

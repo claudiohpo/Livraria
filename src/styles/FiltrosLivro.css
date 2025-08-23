@@ -1,0 +1,141 @@
+.filtros-container {
+  width: 300px;
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  align-self: flex-start; /* Prevent stretching if in a flex container */
+  position: sticky; /* Make it sticky */
+  top: 20px; /* Stick to the top */
+}
+
+.filtros-titulo {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.filtro-fieldset {
+  border: 1px solid #eee;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: var(--border-radius);
+}
+
+.filtro-legend {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  padding: 0 10px;
+  margin-left: 10px; /* Align with padding */
+}
+
+.filtro-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem; /* Add gap between labels */
+}
+
+.filtro-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.filtro-label:hover {
+    color: var(--primary-color);
+}
+
+input[type="checkbox"] {
+  display: none; /* Keep hiding the default checkbox */
+}
+
+.filtro-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--secondary-color);
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style of the checkmark inside */
+.filtro-checkbox::before {
+  content: '✔'; /* Use a checkmark character or an SVG */
+  color: white;
+  font-size: 14px;
+  position: absolute;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s ease;
+}
+
+/* Style when checked */
+input[type="checkbox"]:checked + .filtro-checkbox {
+  background-color: var(--tertiary-color);
+  border-color: var(--tertiary-color);
+}
+
+input[type="checkbox"]:checked + .filtro-checkbox::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.filtro-button {
+  padding: 12px 24px;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%; /* Make button full width */
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.filtro-button:hover {
+  background-color: var(--septenary-color-vibrant);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.filtro-select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  color: #333;
+  background-color: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23752512' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  transition: var(--transition-fast);
+}
+
+.filtro-select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(117, 37, 18, 0.2); /* Use theme color for focus ring */
+}
+
+.filtro-select option {
+  padding: 8px;
+  background-color: #fff;
+  color: #333;
+}

@@ -1,0 +1,67 @@
+.transacoes-colaborador {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 24px;
+  color: #752512;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Estilos da tabela */
+.tabela-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.tabela-transacoes {
+  width: 90%;
+  border-collapse: collapse;
+  background-color: #fff2eb;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tabela-transacoes th,
+.tabela-transacoes td {
+  padding: 15px 20px;
+  text-align: left;
+  border-bottom: 1px solid #ffceb6;
+}
+
+.tabela-transacoes th {
+  background-color: #ffceb6;
+  color: #752512;
+  font-weight: bold;
+}
+
+.tabela-transacoes tbody tr:hover {
+  background-color: #ffddcc;
+}
+
+.tabela-transacoes tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Estilos do botão de detalhes */
+.detalhes-botao {
+  background-color: #752512;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.detalhes-botao:hover {
+  background-color: #a73a21;
+}

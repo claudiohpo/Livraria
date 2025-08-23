@@ -1,0 +1,356 @@
+.meus-produtos-container {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Filtros de Status */
+.status-filtros {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+   justify-content: center;
+   position: relative
+}
+
+.status-filtros button {
+  padding: 8px 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  position: relative;
+  transition: color 0.s ease
+}
+
+
+.status-filtros button.ativo {
+  color: #000;
+  font-weight: bold;
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: -1px; 
+  left: 0;
+  height: 2px;
+  background-color: #A73A21;
+  transition: all 0.7s ease;
+  z-index: 1;
+}
+
+/* .status-filtros button.ativo::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #A73A21;
+} */
+
+/* Card de Produto */
+.produto-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start; /* Alinha o conteúdo do card à esquerda */
+  text-align: left; /* Garante que o texto dentro do card seja alinhado à esquerda */
+}
+
+.produto-info h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 5px;
+ 
+}
+
+.produto-info .autor {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.produto-info .quantidade {
+  font-size: 14px;
+  color: #333;
+}
+
+.produto-valores {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+  margin: 10px 0;
+}
+
+.produto-valores p {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+
+.produto-valores .subtotal {
+  font-size: 14px;
+  color: #666;
+}
+
+.produto-valores .total {
+  font-weight: bold;
+  color: #333;
+}
+
+
+
+
+.produto-card-meus-produtos .card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 80px 0.7fr auto; /* Imagem fixa, info flexível, botão automático */
+  gap: 16px;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.produto-card-meus-produtos .card-image {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+  grid-column: 1;
+}
+
+.produto-card-meus-produtos .card-content {
+  grid-column: 2;
+  min-width: 0; /* Evita overflow */
+}
+
+.detalhes-btn-container {
+  grid-column: 3;
+  justify-self: end; /* Alinha o botão à direita */
+}
+
+
+.detalhes-btn {
+  padding: 8px 20px;
+  background-color: #fff;
+  border: 1px solid #A73A21;
+  color: #A73A21;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.detalhes-btn:hover {
+  background-color: #A73A21;
+  color: #fff;
+}
+
+/* 
+
+.produto-card-meus-produtos .card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  width: 100%; 
+  display: flex; 
+  align-items: center;
+  gap: 16px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.produto-card-meus-produtos .card-content {
+  flex: 1;  
+  text-align: left;  
+} 
+.produto-card-meus-produtos .card-image {
+  width: 80px;  
+  height: 120px;  
+  object-fit: cover;  
+  border-radius: 4px;
+}*/
+.produto-card-meus-produtos .card-nome {
+  align-items:start;
+  justify-content:start;
+  font-size: 18px;
+  margin: 0 0 8px 0; 
+}
+
+.produto-card-meus-produtos .card-preco {
+  font-size: 16px;
+  color: #888;
+  margin: 0;
+}
+
+/* Ajuste para o container de cards */
+/* .produto-card-meus-produtos .cards-container {
+  margin-left: 10px;
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column; 
+  gap: 20px;
+  height: auto; 
+} */
+
+.produto-card-meus-produtos .card-infos p, h3{
+  justify-self: left;
+  
+}
+
+/* 
+.detalhes-btn {
+  align-items: end;
+
+  padding: 8px 20px;
+  background-color: #fff;
+  border: 1px solid #A73A21;
+  color: #A73A21;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  display: flex;
+} */
+
+.detalhes-btn:hover {
+  background-color: #A73A21;
+  color: #fff;
+}
+
+/* Estilo para o container de nenhum produto */
+.sem-produtos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  border-radius: 8px;
+  margin-top: 20px;
+
+}
+
+
+/* Estilo para a imagem */
+.image-nenhumProduto {
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  opacity: 0.7;
+  filter: grayscale(30%);
+}
+
+/* Texto abaixo da imagem */
+.sem-produtos p {
+  font-size: 16px;
+  color: #A73A21;
+  margin-top: 15px;
+  line-height: 1.5;
+
+}
+
+
+@media (max-width: 768px) {
+  .produto-card-meus-produtos .card {
+    grid-template-columns: 60px 1fr auto; /* Colunas mais compactas */
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .produto-card-meus-produtos .card-image {
+    width: 60px;
+    height: 90px;
+  }
+  
+  .detalhes-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .status-filtros {
+    flex-wrap: wrap;
+  }
+
+  .status-filtros button {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+   .sem-produtos {
+    padding: 30px 15px;
+  }
+  
+  .image-nenhumProduto {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .produto-card-meus-produtos .card {
+    grid-template-columns: 1fr; /* Stack em uma coluna */
+    grid-template-rows: auto auto auto;
+    gap: 10px;
+  }
+  
+  .produto-card-meus-produtos .card-image {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center; /* Centraliza a imagem */
+  }
+  
+  .produto-card-meus-produtos .card-content {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  
+  .detalhes-btn-container {
+    grid-column: 1;
+    grid-row: 3;
+    justify-self: stretch; /* Botão ocupa toda largura */
+  }
+  
+  .detalhes-btn {
+    width: 100%;
+  }
+}
+
+.produto-card-meus-produtos .card-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-grow: 1;
+}
+
+.produto-card-meus-produtos .card-text-content {
+  display: flex;
+  justify-items: right;
+  justify-content: right;
+  flex-direction: column;
+  height: 80px;
+}
+
+.produto-card-meus-produtos .card-price {
+  height: 80px;
+  font-weight: bold;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  color: #333;
+  font-size: 16px;
+}
