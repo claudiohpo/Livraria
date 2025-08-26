@@ -9,5 +9,7 @@ interface IAddressRequest{
     city: string;
     state: string;
     zipCode: string;
-    observations: string;
+    observations?: string;
 }
+
+export { IAddressRequest };

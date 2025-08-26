@@ -1,7 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
+import { Address } from "./Address";
+import { CreditCard } from "./CreditCard";
 
 @Entity()
-export class Client {
+export class Costumer {
     @PrimaryGeneratedColumn()
     id!: number;
 
@@ -26,12 +28,17 @@ export class Client {
     @Column({ length: 10 })
     gender!: string;
 
-    //Relacionamentos (inserir abaixo conforme for criando outras entidades)
-
-
     @CreateDateColumn()
     created_at!: Date;
 
     @UpdateDateColumn()
     updated_at!: Date;
+
+    //Relacionamentos (inserir abaixo conforme for criando as entidades) **NÃO ESQUECER**
+
+    @OneToMany(() => Address, (address) => address.client, { cascade: true })
+    addresses: Address[];
+
+    @OneToMany(() => CreditCard, (creditCard) => creditCard.client, { cascade: true })
+    creditCards: CreditCard[];
 }
