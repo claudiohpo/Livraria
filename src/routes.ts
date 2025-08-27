@@ -3,11 +3,13 @@ import { Router} from "express";
 import priceGroupRoutes from "./routes/pricegroup.routes";
 import categoryRoutes from "./routes/category.routes";
 import bookRoutes from "./routes/book.routes";
+import costumerRoutes from "./routes/costumer.routes";
 
 
 const router = Router();
 
 router.use("/price-groups", priceGroupRoutes);
+router.use("/costumers", costumerRoutes);
 router.use("/category", categoryRoutes);
 router.use("/book", bookRoutes);
 

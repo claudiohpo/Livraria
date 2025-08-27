@@ -1,14 +1,20 @@
 import { getCustomRepository } from "typeorm";
 import { CostumersRepositories } from "../../repositories/CostumersRepositories";
+import { AddressesRepositories } from "../../repositories/AddressesRepositories"; //criar
+import { CreditCardsRepositories } from "../../repositories/CreditCardsRepositories";
 import { ICostumerRequest } from "../../Interface/ICostumerInterface"; //Talvez importar Address e Card Interfaces
+// import { CreateAdressService
+// import { CreateCreditCardService    }
+import { Address } from "../../entities/Address";
 import bcrypt from "bcryptjs";
+
 
 
 export class CreateCostumerService {
     async execute(data: ICostumerRequest){
         const costumersRepo = getCustomRepository(CostumersRepositories)
-        //const addressRepo = getCustomRepository(AddressRepositories) //criar
-        //const cardRepo = getCustomRepository(CardRepositories) //criar
+        const addressesRepo = getCustomRepository(AddressesRepositories) //criar
+        const cardRepo = getCustomRepository(CreditCardsRepositories) //criar
 
         const {
             name,
@@ -49,9 +55,41 @@ export class CreateCostumerService {
             throw new Error("Email já cadastrado.");
         }
 
-        const existingCpf = await costumersRepo.findOne({ where: { cpf } });
-        if (existingCpf) {
+        const existingCPF = await costumersRepo.findOne({ where: { cpf:("" + cpf).replace(/\D/g, "") } });
+        if (existingCPF) {
             throw new Error("CPF já cadastrado.");
+        }
+
+        // Validação de campos dos endereços (RN0023)
+        const requiredAddressFields = [
+            "residenceType",
+            "streetType",
+            "street",
+            "number",
+            "complement",
+            "neighborhood",
+            "city",
+            "state",
+            "zipCode"
+        ];
+
+        for (const address of (billingAddress as any[]).concat(deliveryAddress as any[])) {
+            for (const field of requiredAddressFields) {
+                if (!address[field] || ("" + address[field]).trim() === "") {
+                    throw new Error(`O campo ${field} é obrigatório para os endereços.`);
+                }
+            }
+        }
+
+        // RN0024 / RN0025 - Validação de cartões (bandeira permitida)
+        const ALLOWED_CARD_BRANDS = ["Visa", "MasterCard", "Amex", "Elo", "Hiper"];
+        for (const c of card as any[]){
+            if (!c.cardNumber || !c.cardHolderName || !c.cardExpirationDate || !c.cardCVV || !c.cardBrand){
+                throw new Error("Campos obrigatórios do cartão não preenchidos.")
+            }
+            if (!ALLOWED_CARD_BRANDS.includes(String(c.cardBrand).toUpperCase())) {
+                throw new Error(`A bandeira do cartão ${c.cardBrand} não é permitida. Permitidas: ${ALLOWED_CARD_BRANDS.join(", ")}`);
+            }
         }
 
         
