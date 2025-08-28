@@ -1,4 +1,4 @@
-interface ICardRequest {
+interface ICreditCardRequest {
     id: number;
     cardNumber: string;
     cardHolderName: string;
@@ -8,4 +8,4 @@ interface ICardRequest {
     preferredCard: boolean;
 }
 
-export {ICardRequest};
+export {ICreditCardRequest};

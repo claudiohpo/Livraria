@@ -1,5 +1,5 @@
 import { IAddressRequest } from "./IAddressInterface";
-import { ICardRequest } from "./ICardInterface";
+import { ICreditCardRequest } from "./ICreditCardInterface";
 
 interface ICostumerRequest {
     id: number;
@@ -13,7 +13,7 @@ interface ICostumerRequest {
     gender: string;
     billingAddress: IAddressRequest[]; //RN0021
     deliveryAddress: IAddressRequest[]; //RN0022
-    card: ICardRequest[]; //RN0024
+    card: ICreditCardRequest[]; //RN0024
 }
 
 export {ICostumerRequest};
