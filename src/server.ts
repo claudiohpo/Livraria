@@ -1,11 +1,20 @@
 //Inicia o servidor Express.
 import express, { NextFunction,Response,Request} from "express";
+import cors from "cors"; // ← Importe o pacote cors
 import {router} from "./routes";
 import "express-async-errors"; // Permite que o express entenda erros assíncronos
 import "reflect-metadata";
 import "./database/index"; // Importa a configuração do banco de dados
 
 const app = express();
+
+
+app.use(cors({
+    origin: 'http://localhost:5173', // URL do seu frontend React
+    credentials: true, // Permite cookies/auth headers
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use(express.json()); // Permite que a API entenda JSON no body das requisições
 
