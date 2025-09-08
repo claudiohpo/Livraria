@@ -41,7 +41,7 @@ export class CreateCostumerService {
       );
     }
 
-    // RNF0032 - confirmação
+    // RNF0032 - confirmação de senha
     if (!passwordConfirmation || password !== passwordConfirmation) {
       throw new Error("Confirmação de senha inválida ou ausente. As senhas devem corresponder.");
     }
@@ -109,10 +109,6 @@ export class CreateCostumerService {
     const createdEntity = costumersRepo.create(costumerToCreate);
     const saved = (await costumersRepo.save(createdEntity)) as Costumer;
 
-    // se quiser gerar clientCode (RF0035), gere aqui e salve:
-    // saved.clientCode = `CUST${String(saved.id).padStart(6, "0")}`;
-    // await costumersRepo.save(saved);
-
     // Persistir endereços (services atualizados recebem Costumer)
     const createAddressService = new CreateAddressService();
     for (const addr of billingAddress as any[]) {
@@ -130,7 +126,7 @@ export class CreateCostumerService {
       await createCardService.execute(c, saved);
     }
 
-    // Recarregar cliente com relações usando a forma compatível com TypeORM 0.3.x
+    // Recarregar cliente com relações
     const full = await costumersRepo.findOne({
       where: { id: saved.id },
       relations: ["addresses", "creditCards"],
