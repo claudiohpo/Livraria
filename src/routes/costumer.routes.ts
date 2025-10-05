@@ -15,7 +15,7 @@ const updateCostumerController = new UpdateCostumerController();
 const getCostumerByEmailController = new GetCostumerByEmailController();
 
 router.post("/", createCostumerController.handle.bind(createCostumerController));
-router.get("/", listCostumerController.handle.bind(ListCostumerController));
+router.get("/", listCostumerController.handle.bind(listCostumerController)); // <--- corrigido "L" tava maiusculo na segunda parte
 router.delete("/:id", deleteCostumerController.handle.bind(deleteCostumerController));
 router.put("/:id", updateCostumerController.handle.bind(updateCostumerController));
 router.get("/email/:email", getCostumerByEmailController.handle.bind(getCostumerByEmailController));

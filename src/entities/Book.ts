@@ -1,26 +1,16 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToMany,
-  JoinTable,
-  ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from "typeorm";
-import { Category } from "../entities/Category"; // ajuste o path se seu arquivo estiver em outro lugar
-import { PriceGroup } from "../entities/PriceGroup"; // ajuste o path se necessário
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne, CreateDateColumn, UpdateDateColumn,} from "typeorm";
+import { Category } from "../entities/Category";
+import { PriceGroup } from "../entities/PriceGroup";
 
 @Entity("books")
 export class Book {
-  // ID sequencial (Postgres SERIAL) — atende sua exigência
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column()
   author!: string;
 
-  // relação N:N com Category (uma lista de categorias)
+  // relação N:N com Category
   @ManyToMany(() => Category, { cascade: false })
   @JoinTable({ name: "books_categories" })
   categories!: Category[];
@@ -47,7 +37,7 @@ export class Book {
   @Column("text")
   synopsis!: string;
 
-  // Usamos coluna JSON para guardar as dimensões (height, width, depth, weight)
+  // Coluna JSON para guardar as dimensões
   @Column({ type: "json" })
   dimensions!: { height: number; width: number; depth: number; weight: number };
 
@@ -55,8 +45,8 @@ export class Book {
   @ManyToOne(() => PriceGroup, (pg) => pg.id, { eager: true })
   pricegroup!: PriceGroup;
 
-  // código de barras único (se necessário)
-  @Column({ unique: true })
+  // código de barras único
+  @Column({ unique: true }) //verificar se manteremos unico
   barcode!: string;
 
   @Column("decimal", { precision: 10, scale: 2 })

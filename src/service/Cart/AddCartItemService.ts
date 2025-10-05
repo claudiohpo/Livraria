@@ -1,0 +1,115 @@
+import { getManager } from "typeorm";
+import { CartItemsRepositories } from "../../repositories/CartItemsRepositories";
+import { CartsRepositories } from "../../repositories/CartsRepositories";
+import { BooksRepositories } from "../../repositories/BooksRepositories";
+import { InventoryRepository } from "../../repositories/InventoryRepositories";
+import { InventoryReservationsRepository } from "../../repositories/InventoryReservationsRepository";
+import { ICartItemRequest } from "../../Interface/ICartItemInterface";
+
+/**
+ * Reserva estoque em lotes FIFO (mais antigo primeiro) e grava InventoryReservation.
+ * Se não houver estoque suficiente lança erro.
+ *
+ * Observações:
+ * - Não forçamos ids manualmente aqui (removido uuidv4). As PKs são geradas pelo banco com @PrimaryGeneratedColumn.
+ * - Para evitar problemas de sobrecarga do TypeORM/TS com `create()` usamos `save()` com objetos literais
+ *   e, ao relacionar com Cart, passamos a relação parcial { id: cartId } que é aceita pelo TypeORM.
+ */
+
+export class AddCartItemService {
+  public async execute({ cartId, itemId, quantity, price }: ICartItemRequest) {
+    if (!cartId || !itemId || !quantity || Number(quantity) <= 0) {
+      throw new Error("Parâmetros inválidos");
+    }
+
+    // normaliza/valida tipos
+    const cartIdNum = Number(cartId);
+    const itemIdNum = Number(itemId);
+    const qty = Number(quantity);
+    if (Number.isNaN(cartIdNum) || Number.isNaN(itemIdNum) || Number.isNaN(qty) || qty <= 0) {
+      throw new Error("Parâmetros inválidos");
+    }
+
+    return await getManager().transaction(async (transactionalEntityManager) => {
+      const cartsRepo = transactionalEntityManager.getCustomRepository(CartsRepositories);
+      const cartItemsRepo = transactionalEntityManager.getCustomRepository(CartItemsRepositories);
+      const bookRepo = transactionalEntityManager.getCustomRepository(BooksRepositories);
+      const invRepo = transactionalEntityManager.getCustomRepository(InventoryRepository);
+      const resRepo = transactionalEntityManager.getCustomRepository(InventoryReservationsRepository);
+
+      const cart = await cartsRepo.findOne(cartIdNum);
+      if (!cart) throw new Error("Carrinho não encontrado");
+
+      const book = await bookRepo.findOne(itemIdNum);
+      if (!book) throw new Error("Livro não encontrado");
+
+      // 1) verificar total disponível nos lotes (FIFO)
+      const availableRows = await invRepo.find({
+        where: { bookId: itemIdNum } as any,
+        order: { entryDate: "ASC" } // ordem FIFO
+      });
+
+      const availableTotal = availableRows.reduce((s, r) => s + Number(r.quantity), 0);
+      if (availableTotal < qty) throw new Error("Não há estoque suficiente para adicionar ao carrinho");
+
+      // calcular preço
+      let priceNum: number;
+      if (typeof price !== "undefined" && price !== null) {
+        const p = Number(price);
+        priceNum = Number.isNaN(p) ? (book && Number((book as any).price) ? Number((book as any).price) : 0) : p;
+      } else {
+        priceNum = book && Number((book as any).price) ? Number((book as any).price) : 0;
+      }
+
+      // 2) criar ou atualizar item do carrinho
+      // Usamos relação parcial { cart: { id: cartIdNum } } para evitar problemas de tipagem.
+      let cartItem = await cartItemsRepo.findOne({
+        where: { cart: { id: cartIdNum }, bookId: itemIdNum } as any
+      });
+
+      if (!cartItem) {
+        // construir objeto e salvar direto (save retorna a entidade criada)
+        const newCartItemData: any = {
+          cart: { id: cartIdNum },
+          bookId: itemIdNum,
+          quantity: qty,
+          price: priceNum,
+          created_at: new Date(),
+          updated_at: new Date()
+        };
+        cartItem = await cartItemsRepo.save(newCartItemData);
+      } else {
+        cartItem.quantity = Number(cartItem.quantity) + qty;
+        // não sobrescrever o preço ao atualizar quantidade, para preservar o preço original no momento da adição
+        cartItem.updated_at = new Date();
+        await cartItemsRepo.save(cartItem);
+      }
+
+      // 3) reservar do inventário por FIFO e criar InventoryReservation
+      let toReserve = qty;
+      for (const row of availableRows) {
+        if (toReserve <= 0) break;
+        if (Number(row.quantity) <= 0) continue;
+
+        const take = Math.min(toReserve, Number(row.quantity));
+
+        // decrementar a linha de inventário
+        row.quantity = Number(row.quantity) - take;
+        await invRepo.save(row);
+
+        // criar reservation (usando save com as chaves estrangeiras para não depender de create overload)
+        const reservationData: any = {
+          inventoryId: row.id,
+          cartItemId: cartItem.id,
+          quantity: take,
+          expiresAt: null // TTL / job externo gerencia expiração
+        };
+        await resRepo.save(reservationData);
+
+        toReserve -= take;
+      }
+
+      return cartItem;
+    });
+  }
+}

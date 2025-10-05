@@ -17,5 +17,6 @@ interface IBookRequest {
     };
     pricegroup: string;
     barcode: string;
+    cost: number;
 }
 export {IBookRequest};

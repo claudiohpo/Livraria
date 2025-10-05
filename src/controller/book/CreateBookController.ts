@@ -3,7 +3,7 @@ import { CreateBookService } from "../../service/Book/CreateBookService";
 
 class CreateBookController {
     async handle(request: Request, response: Response){
-        const { id,author, category, year, title, publisher, edition, ISBN, pages, synopsis, dimensions, pricegroup, barcode} = request.body; 
+        const { id,author, category, year, title, publisher, edition, ISBN, pages, synopsis, dimensions, pricegroup, barcode,cost} = request.body; 
         //Lembrar que nas dimensoes o format deve ser Altura, largura, peso e profundidade | A x L x P x P |
         
         const createBookService = new CreateBookService();
@@ -21,7 +21,8 @@ class CreateBookController {
                 synopsis,
                 dimensions,
                 pricegroup,
-                barcode
+                barcode,
+                cost
             });
             return response.status(201).json(product); 
         } catch (error) {

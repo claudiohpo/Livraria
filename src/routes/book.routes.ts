@@ -8,7 +8,7 @@ const router = Router();
 const createBookController = new CreateBookController();
 
 
-router.post("/book", createBookController.handle.bind(createBookController));
+router.post("/", createBookController.handle.bind(createBookController));
 
 
 export default router;

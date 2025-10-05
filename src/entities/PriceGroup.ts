@@ -25,7 +25,7 @@ export class PriceGroup {
   @Column("decimal", { precision: 5, scale: 4, default: 0.0 })
   minAllowedMargin!: number;
 
-  // desconto máximo permitido (opcional)
+  // desconto máximo permitido (por exemplo 0.15 = 15%)
   @Column("decimal", { precision: 5, scale: 4, default: 0.0 })
   maxAllowedDiscount!: number;
 

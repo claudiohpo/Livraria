@@ -1,5 +1,5 @@
 import { getCustomRepository } from "typeorm";
-import { IBookRequest } from "../../Interface/IBookInterface"; // remova extensão .ts
+import { IBookRequest } from "../../Interface/IBookInterface";
 import { BooksRepositories } from "../../repositories/BooksRepositories";
 import { CategoriesRepository } from "../../repositories/CategoriesRepository";
 import { PriceGroupRepository } from "../../repositories/PriceGroupRepository";
@@ -8,7 +8,7 @@ export class CreateBookService {
   async execute(data: IBookRequest) {
     const {
       author,
-      category, // array de ids de categoria (ex.: number[] ou string[])
+      category, // array de ids de categoria
       year,
       title,
       publisher,
@@ -19,7 +19,7 @@ export class CreateBookService {
       dimensions,
       pricegroup, // id do grupo de precificação
       barcode,
-      // opcional: cost (se você capturar custo)
+      cost,       // agora vem direto da interface
     } = data;
 
     // RN0011 - validação obrigatória
@@ -48,14 +48,12 @@ export class CreateBookService {
 
     const categoriesRepo = getCustomRepository(CategoriesRepository);
     const categoryEntities = await categoriesRepo.findByIds(category);
-    // RN0012 - associação com categorias: exige pelo menos uma categoria válida
     if (!categoryEntities || categoryEntities.length === 0) {
       throw new Error("Categorias inválidas ou não encontradas.");
     }
 
     const priceGroupRepo = getCustomRepository(PriceGroupRepository);
     const group = await priceGroupRepo.findOne(pricegroup);
-    // RN0013 - grupo de precificação deve existir
     if (!group) {
       throw new Error("Grupo de precificação inválido.");
     }
@@ -68,17 +66,14 @@ export class CreateBookService {
       throw new Error("Livro com esse ISBN já está cadastrado.");
     }
 
-    // Se quiser validar barcode único também
+    // Barcode único
     const barcodeExists = await booksRepo.findOne({ where: { barcode } });
     if (barcodeExists) {
       throw new Error("Livro com esse código de barras já está cadastrado.");
     }
 
-    // RN0013: cálculo de preço com base no grupo.  
-    // OBS: aqui eu usei um 'cost' fictício; ideal é obter 'cost' do cadastro do fornecedor/produto.
-    const cost = (data as any).cost ?? 0; // se não existir, é 0 — recomendo enviar cost no IBookRequest
+    // RN0013: cálculo de preço com base no grupo
     if (!cost || cost <= 0) {
-      // opcional: permitir cost 0 e apenas salvar preço do grupo? Depende do processo
       throw new Error("Custo do livro (cost) deve ser informado para cálculo do preço.");
     }
 
