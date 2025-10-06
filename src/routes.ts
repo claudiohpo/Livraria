@@ -6,6 +6,7 @@ import bookRoutes from "./routes/book.routes";
 import costumerRoutes from "./routes/costumer.routes";
 import cartRoutes from "./routes/cart.routes";
 import inventoryRoutes from "./routes/inventory.routes";
+import bookImageRoutes from "./routes/bookimage.routes";
 
 
 
@@ -17,5 +18,6 @@ router.use("/category", categoryRoutes);
 router.use("/book", bookRoutes);
 router.use("/cart", cartRoutes);
 router.use("/inventory", inventoryRoutes);
+router.use("/", bookImageRoutes);
 
 export {router};
