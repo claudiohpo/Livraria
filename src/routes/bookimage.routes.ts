@@ -17,4 +17,6 @@ router.get("/book/:bookId/images", listBookImageController.handle.bind(listBookI
 router.put("/images/:id", updateBookImageController.handle.bind(updateBookImageController));
 router.delete("/images/:id", deleteBookImageController.handle.bind(deleteBookImageController));
 
+router.get("/images", listBookImageController.handle.bind(listBookImageController));
+
 export default router;
