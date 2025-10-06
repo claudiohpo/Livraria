@@ -18,6 +18,6 @@ router.use("/category", categoryRoutes);
 router.use("/book", bookRoutes);
 router.use("/cart", cartRoutes);
 router.use("/inventory", inventoryRoutes);
-router.use("/", bookImageRoutes);
+router.use("/bookImages", bookImageRoutes);
 
 export {router};
