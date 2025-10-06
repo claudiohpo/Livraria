@@ -1,22 +1,18 @@
 import { getCustomRepository } from "typeorm";
-//import { v4 as uuidv4 } from "uuid";
 import { InventoryRepository } from "../../repositories/InventoryRepositories";
 import { IInventoryRequest } from "../../Interface/IInventoryInterface";
 
-/**
- * Valida RN0061 (quantity > 0), RN0062 (unitCost mandatory), RNF0064 (entryDate mandatory),
- * e cria um registro em estoque.
- */
+//Valida RN0061 (quantidade > 0), RN0062 (Deve haver um custo ), RNF0064 (Data de entrada obrigatória), e cria um registro em estoque.
 
 export class CreateInventoryEntryService {
   async execute(data: IInventoryRequest) {
     const invRepo = getCustomRepository(InventoryRepository);
 
-    if (!data.bookId) throw new Error("bookId is required");
-    if (data.quantity === undefined || data.quantity === null) throw new Error("quantity is required");
-    if (Number(data.quantity) <= 0) throw new Error("quantity must be greater than zero (RN0061)");
-    if (data.unitCost === undefined || data.unitCost === null) throw new Error("unitCost is required (RN0062)");
-    if (!data.entryDate) throw new Error("entryDate is required (RNF0064)");
+    if (!data.bookId) throw new Error("ID do livro é obrigatório");
+    if (data.quantity === undefined || data.quantity === null) throw new Error("Quantidade é obrigatória");
+    if (Number(data.quantity) <= 0) throw new Error("Quantidade deve ser maior que zero");
+    if (data.unitCost === undefined || data.unitCost === null) throw new Error("Custo é obrigatório");
+    if (!data.entryDate) throw new Error("Data de entrada é obrigatória");
 
     const entry = invRepo.create({
       bookId: data.bookId,

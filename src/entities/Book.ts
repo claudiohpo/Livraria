@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne, CreateDateColumn, UpdateDateColumn,} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany,} from "typeorm";
 import { Category } from "../entities/Category";
 import { PriceGroup } from "../entities/PriceGroup";
+import { BookImage } from "./BookImage";
 
 @Entity("books")
 export class Book {
@@ -44,6 +45,9 @@ export class Book {
   // relação N:1 com PriceGroup
   @ManyToOne(() => PriceGroup, (pg) => pg.id, { eager: true })
   pricegroup!: PriceGroup;
+
+  @OneToMany(() => BookImage, (image) => image.book, { cascade: true, eager: true })
+  images!: BookImage[];
 
   // código de barras único
   @Column({ unique: true }) //verificar se manteremos unico

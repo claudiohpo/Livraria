@@ -6,16 +6,6 @@ import { InventoryRepository } from "../../repositories/InventoryRepositories";
 import { InventoryReservationsRepository } from "../../repositories/InventoryReservationsRepository";
 import { ICartItemRequest } from "../../Interface/ICartItemInterface";
 
-/**
- * Reserva estoque em lotes FIFO (mais antigo primeiro) e grava InventoryReservation.
- * Se não houver estoque suficiente lança erro.
- *
- * Observações:
- * - Não forçamos ids manualmente aqui (removido uuidv4). As PKs são geradas pelo banco com @PrimaryGeneratedColumn.
- * - Para evitar problemas de sobrecarga do TypeORM/TS com `create()` usamos `save()` com objetos literais
- *   e, ao relacionar com Cart, passamos a relação parcial { id: cartId } que é aceita pelo TypeORM.
- */
-
 export class AddCartItemService {
   public async execute({ cartId, itemId, quantity, price }: ICartItemRequest) {
     if (!cartId || !itemId || !quantity || Number(quantity) <= 0) {
@@ -62,7 +52,7 @@ export class AddCartItemService {
       }
 
       // 2) criar ou atualizar item do carrinho
-      // Usamos relação parcial { cart: { id: cartIdNum } } para evitar problemas de tipagem.
+      // Relação parcial { cart: { id: cartIdNum } } para evitar problemas de tipagem.
       let cartItem = await cartItemsRepo.findOne({
         where: { cart: { id: cartIdNum }, bookId: itemIdNum } as any
       });
