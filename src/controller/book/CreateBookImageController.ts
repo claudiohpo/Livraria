@@ -4,7 +4,7 @@ import { CreateBookImageService } from "../../service/BookImage/CreateBookImageS
 class CreateBookImageController {
   async handle(request: Request, response: Response) {
     const { url, caption } = request.body;
-    const { bookId } = request.params; // rota /book/:bookId/images
+    const { bookId } = request.params;
 
     const createService = new CreateBookImageService();
     try {

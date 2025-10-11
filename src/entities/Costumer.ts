@@ -20,7 +20,6 @@ export class Costumer {
   @Column({ length: 100, unique: true })
   email!: string;
 
-  // senha criptografada
   @Column()
   password!: string;
 
@@ -48,7 +47,7 @@ export class Costumer {
   @Column({ type: "int", default: 0 })
   ranking!: number;
 
-  // código do cliente (opcional, único)
+  // código do cliente
   @Column({ length: 20, unique: true, nullable: true })
   clientCode?: string;
 

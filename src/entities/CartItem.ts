@@ -3,7 +3,7 @@ import { Cart } from "./Cart";
 
 @Entity({ name: "item_carrinho" })
 export class CartItem {
-  @PrimaryGeneratedColumn() // <-- gera IDs sequenciais automaticamente
+  @PrimaryGeneratedColumn() 
   id: number;
 
   @Column({ type: "integer" })
@@ -16,10 +16,10 @@ export class CartItem {
   cartId: string;
 
   @Column({ type: "numeric", precision: 10, scale: 2, nullable: true })
-  price?: number; //Preco do livro no momento da adição ao carrinho
+  price?: number; 
 
   @ManyToOne(() => Cart, cart => cart.items)
-  @JoinColumn({ name: "cartId" }) // garante que a FK é cartId
+  @JoinColumn({ name: "cartId" }) 
   cart: Cart;
 
 

@@ -2,16 +2,16 @@ import {
   Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn,} from "typeorm";
 import { Book } from "./Book";
 
-@Entity("imagens_livros") // nome da tabela conforme modelo relacional
+@Entity("imagens_livros") 
 export class BookImage {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column()
-  url!: string; // URL da imagem (pode ser externa ou caminho no servidor)
+  url!: string; // URL da imagem 
 
   @Column({ nullable: true, type: "text" })
-  caption?: string; // legenda/descrição da imagem
+  caption?: string; 
 
   // relacionamento com livro (FK livro_id)
   @ManyToOne(() => Book, (book) => book.images, { onDelete: "CASCADE" })

@@ -10,7 +10,6 @@ class GetBookByIdController {
       const book = await service.execute(id);
       return response.status(200).json(book);
     } catch (err: any) {
-      // padrão do projeto: 400 para erro com mensagem, 500 para outros
       if (err instanceof Error) {
         const msg = err.message.toLowerCase();
         if (msg.includes("não encontrado") || msg.includes("not found")) {

@@ -3,7 +3,7 @@ import { CartItem } from "./CartItem";
 
 @Entity({ name: "carrinho" })
 export class Cart {
-  @PrimaryGeneratedColumn() // <-- gera IDs sequenciais automaticamente
+  @PrimaryGeneratedColumn() 
   id: number;
 
   @Column({ type: "boolean", default: true })

@@ -17,7 +17,7 @@ export class Address {
   id!: number;
 
   @Column({ length: 20 })
-  type!: AddressType; // ex: 'BILLING' | 'DELIVERY'
+  type!: AddressType; // 'BILLING' | 'DELIVERY'
 
   @Column()
   residenceType!: string;

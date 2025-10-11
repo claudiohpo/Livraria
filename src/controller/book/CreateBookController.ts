@@ -11,7 +11,7 @@ class CreateBookController {
         try {
             const product = await createBookService.execute({
                 author,
-                category,//uma ou mais
+                category,
                 year,
                 title,
                 publisher,

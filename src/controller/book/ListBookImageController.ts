@@ -3,7 +3,7 @@ import { ListBookImagesService } from "../../service/BookImage/ListBookImageServ
 
 class ListBookImageController {
   async handle(request: Request, response: Response) {
-    const { bookId } = request.params; // opcional
+    const { bookId } = request.params;
     const listService = new ListBookImagesService();
 
     try {

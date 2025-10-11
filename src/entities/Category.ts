@@ -17,7 +17,6 @@ export class Category {
   @Column({ type: "text", nullable: true })
   description?: string;
 
-  // flag para inativar categoria sem excluir
   @Column({ default: true })
   active!: boolean;
 

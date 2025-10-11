@@ -4,7 +4,6 @@ import { ListCategoryService } from "../../service/Category/ListCategoryService"
 export class ListCategoryController {
   async handle(request: Request, response: Response) {
     try {
-      // opcional: ?onlyActive=true
       const onlyActive = request.query.onlyActive === "true";
       const service = new ListCategoryService();
       const categories = await service.execute(onlyActive);

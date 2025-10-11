@@ -1,7 +1,7 @@
 interface IInventoryRequest {
     id?: number;
     quantity: number;
-    unitCost: string; // Usando string para evitar problemas de precisão com números decimais
+    unitCost: string; 
     entryDate: Date;
     invoiceNumber?: string | null;
     bookId: string;
