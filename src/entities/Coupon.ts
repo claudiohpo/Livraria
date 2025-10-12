@@ -1,39 +1,3 @@
-// import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
-
-// @Entity({ name: "cupons" })
-// export class Coupon {
-//   @PrimaryGeneratedColumn()
-//   id: number;
-
-//   @Column({ unique: true })
-//   code: string;
-
-//   @Column({ type: "numeric", precision: 10, scale: 2 })
-//   value: number;
-
-//   @Column({ type: "date", nullable: true })
-//   validity?: Date;
-
-//   @Column({ type: "boolean", default: false })
-//   used: boolean;
-
-//   // quando o cupom for usado por uma venda, salvar o id da venda
-//   @Column({ type: "int", nullable: true })
-//   saleUsedId?: number;
-
-//   @Column({ length: 20, nullable: true })
-//   type?: string; // 'PROMO' | 'EXCHANGE'
-
-//   @Column({ type: "numeric", precision: 10, scale: 2, nullable: true })
-//   minPurchaseValue?: number;
-
-//   @CreateDateColumn()
-//   created_at: Date;
-
-//   @UpdateDateColumn()
-//   updated_at: Date;
-// }
-
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: "cupons" })

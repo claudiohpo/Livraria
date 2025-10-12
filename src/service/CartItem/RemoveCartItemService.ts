@@ -13,7 +13,7 @@ export class RemoveCartItemService {
       const resRepo = manager.getCustomRepository(InventoryReservationsRepository);
 
       const item = await itemsRepo.findOne({ where: { id: Number(itemId), cartId: Number(cartId) } });
-      if (!item) throw new Error("Cart item not found");
+      if (!item) throw new Error("Item do carrinho não encontrado");
 
       // find reservations for this cart item
       const reservations = await resRepo.find({ where: { cartItemId: item.id } as any });
@@ -29,7 +29,11 @@ export class RemoveCartItemService {
 
       // remove cart item
       await itemsRepo.delete(item.id);
-      return;
+      return {
+        message: `Item ${item.id} removido do carrinho ${cartId} com sucesso`,
+        removedItem: item
+      };
+
     });
   }
 }

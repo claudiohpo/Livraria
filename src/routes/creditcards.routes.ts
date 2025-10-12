@@ -8,6 +8,8 @@ const createCreditCardController = new CreateCreditCardController();
 const listCreditCardController = new ListCreditCardController();
 
 router.post("/", createCreditCardController.handle.bind(createCreditCardController));
-router.get("/:costumerId", listCreditCardController.handle.bind(listCreditCardController));
+router.get("/id/:costumerId", listCreditCardController.byId.bind(listCreditCardController));
+router.get("/email/:email", listCreditCardController.byEmail.bind(listCreditCardController));
+
 
 export default router;

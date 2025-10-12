@@ -50,7 +50,7 @@ export class UpdateCartItemService {
           toReserve -= take;
         }
       } else {
-        // diff < 0 -> need to release |diff| units back to inventory
+        // diff < 0 -> precisa liberar reservas (do mais recente reservado para o mais antigo)
         let toRelease = Math.abs(diff);
         // fetch reservations for this item in LIFO (release most recently reserved first)
         const reservations = await resRepo.find({ where: { cartItemId: item.id }, order: { createdAt: "DESC" } as any });
