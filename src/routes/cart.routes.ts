@@ -15,10 +15,12 @@ const deleteCartController = new DeleteCartController();
 const listCartController = new ListCartController();
 
 router.post("/", createCartController.handle.bind(createCartController));
-router.get("/", listCartController.handle.bind(listCartController));
 router.get("/:id", getCartController.handle.bind(getCartController));
 router.put("/:id", updateCartController.handle.bind(updateCartController));
 router.delete("/:id", deleteCartController.handle.bind(deleteCartController));
+router.get("/costumer/:clienteId", listCartController.handle.bind(listCartController));
+
+
 
 
 
