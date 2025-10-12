@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { UpdateCartItemService } from "../../service/Cart/UpdateCartItemService";
+import { UpdateCartItemService } from "../../service/CartItem/UpdateCartItemService";
 
 class UpdateCartItemController {
   async handle(request: Request, response: Response) {

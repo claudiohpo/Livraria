@@ -1,251 +1,448 @@
-import { getCustomRepository, getRepository, getManager } from "typeorm";
-import { v4 as uuidv4 } from "uuid";
+// import { getManager } from "typeorm";
+// import { SalesRepositories } from "../../repositories/SalesRepositories";
+// import { SaleItemsRepository } from "../../repositories/SaleItemsRepositories";
+// import { PaymentsRepository } from "../../repositories/PaymentsRepositories";
+// import { CouponsRepositories } from "../../repositories/CouponsRepositories";
+// import { InventoryRepository } from "../../repositories/InventoryRepositories";
+// import { CartItemsRepositories } from "../../repositories/CartItemsRepositories";
+// import { CartsRepositories } from "../../repositories/CartsRepositories";
+// import { CreditCardsRepositories } from "../../repositories/CreditCardsRepositories";
+// import { PaymentGatewayService } from "../Payment/PaymentGatewayService";
+
+// // Entities (para tipagem)
+// import { Sale } from "../../entities/Sale";
+// import { Coupon } from "../../entities/Coupon";
+// import { Inventory } from "../../entities/Inventory";
+// import { SaleItem } from "../../entities/SaleItem";
+// import { Payment } from "../../entities/Payment";
+
+// export class CreateSaleService {
+//   async execute(payload: {
+//     cartId: number;
+//     payments: any[];
+//     addressId?: number;
+//     clientId?: number;
+//   }) {
+//     const { cartId, payments, addressId, clientId } = payload;
+//     if (!cartId) throw new Error("cartId is required");
+
+//     return await getManager().transaction(async transactionalEntityManager => {
+//       const cartsRepo = transactionalEntityManager.getCustomRepository(CartsRepositories);
+//       const cartItemsRepo = transactionalEntityManager.getCustomRepository(CartItemsRepositories);
+//       const salesRepo = transactionalEntityManager.getCustomRepository(SalesRepositories);
+//       const saleItemsRepo = transactionalEntityManager.getCustomRepository(SaleItemsRepository);
+//       const paymentsRepo = transactionalEntityManager.getCustomRepository(PaymentsRepository);
+//       const couponsRepo = transactionalEntityManager.getCustomRepository(CouponsRepositories);
+//       const invRepo = transactionalEntityManager.getCustomRepository(InventoryRepository);
+//       const cardsRepo = transactionalEntityManager.getCustomRepository(CreditCardsRepositories);
+
+//       const cart = await cartsRepo.findOne({ where: { id: cartId }, relations: ["items"] });
+//       if (!cart) throw new Error("Cart not found");
+//       if (!cart.items || cart.items.length === 0) throw new Error("Cart has no items");
+
+//       // calcular total dos items usando preços do carrinho (precisa usar cart.items.price se existir)
+//       let itemsTotal = 0;
+//       for (const it of cart.items) {
+//         // preferir price no item do carrinho (preço final em momento de adição)
+//         const unitPrice = Number(it.price ?? 0);
+//         itemsTotal += +(unitPrice * Number(it.quantity)); // usar + para garantir number
+//       }
+//       // arredondar para 2 casas
+//       itemsTotal = Math.round((itemsTotal + Number.EPSILON) * 100) / 100;
+
+
+//       const freight = 0;
+//       let couponTotal = 0;
+
+//       // Criar entidade Sale — tipada explicitamente como Sale
+//       let saleEntity = salesRepo.create({
+//         status: "OPEN",
+//         freightValue: freight,
+//         clientId: clientId || (cart as any).clientId || null,
+//         deliveryAddressId: addressId || null,
+//         total: itemsTotal,
+//         appliedDiscount: couponTotal,
+//         couponUsedId: null
+//       } as Partial<Sale>) as Sale;
+
+//       saleEntity = await salesRepo.save(saleEntity); // aqui saleEntity é do tipo Sale (não array)
+
+//       // Criar itens da venda
+//       for (const it of cart.items) {
+//         const si = saleItemsRepo.create({
+//           sale: saleEntity,
+//           bookId: (it as any).bookId,
+//           quantity: it.quantity,
+//           unitPrice: (it as any).price || 0
+//         } as Partial<SaleItem>) as SaleItem;
+//         await saleItemsRepo.save(si);
+//       }
+
+//       // Preparar pagamentos
+//       const createdPaymentEntities: Array<{ pay: Payment; coupon?: Coupon }> = [];
+
+//       for (const p of payments || []) {
+//         if (p.type === "CARD") {
+//           let cardEntity = null;
+//           if (p.newCard) {
+//             cardEntity = cardsRepo.create({
+//               cardNumber: p.newCard.cardNumber,
+//               cardHolderName: p.newCard.cardHolderName,
+//               cardBrand: p.newCard.cardBrand,
+//               cardCVV: p.newCard.cardCVV,
+//               cardExpirationDate: new Date(p.newCard.cardExpirationDate),
+//               preferredCard: p.saveCard ? true : false,
+//               costumer: clientId || (cart as any).clientId || null
+
+//             } as any);
+//             await cardsRepo.save(cardEntity);
+//           }
+
+//           const payEnt = paymentsRepo.create({
+//             sale: saleEntity,
+//             type: "CARD",
+//             value: Number(p.amount),
+//             cardId: cardEntity ? cardEntity.id : (p.cardId || null),
+//             status: "PENDING"
+//           } as Partial<Payment>) as Payment;
+//           await paymentsRepo.save(payEnt);
+//           createdPaymentEntities.push({ pay: payEnt });
+//         } else if (p.type === "COUPON") {
+//           if (!p.couponCode) throw new Error("couponCode is required for COUPON payment");
+
+//           // Usar findOne / findOneBy para retornar UMA entidade, não um array
+//           const coupon = (await couponsRepo.findOne({ where: { code: p.couponCode } })) as Coupon | null;
+//           if (!coupon) throw new Error(`Coupon ${p.couponCode} not found`);
+//           if (coupon.used) throw new Error(`Coupon ${p.couponCode} already used`);
+//           if (coupon.validity && new Date(coupon.validity) < new Date()) throw new Error(`Coupon ${p.couponCode} expired`);
+
+//           const payEnt = paymentsRepo.create({
+//             sale: saleEntity,
+//             type: "COUPON",
+//             value: Number(p.amount),
+//             couponId: coupon.id,
+//             status: "PENDING"
+//           } as Partial<Payment>) as Payment;
+//           await paymentsRepo.save(payEnt);
+//           createdPaymentEntities.push({ pay: payEnt, coupon });
+//         } else {
+//           throw new Error(`Unsupported payment type: ${p.type}`);
+//         }
+//       }
+
+//       // Processar captura via gateway (exemplo)
+//       const cardPaymentsToProcess: Array<{ cardId?: string; number?: string; amount: number }> = [];
+//       for (const cpe of createdPaymentEntities) {
+//         if (cpe.pay.type === "CARD") {
+//           cardPaymentsToProcess.push({
+//             cardId: cpe.pay.cardId ? String(cpe.pay.cardId) : undefined,
+//             amount: Number(cpe.pay.value)
+//           });
+//         }
+//       }
+
+//       const paymentGateway = new PaymentGatewayService();
+//       const gwRes = await paymentGateway.captureAll(cardPaymentsToProcess);
+
+//       if (!gwRes.approved) {
+//         // marcar pagamentos como REJECTED
+//         for (const pEntity of createdPaymentEntities) {
+//           pEntity.pay.status = "REJECTED";
+//           await paymentsRepo.save(pEntity.pay);
+//         }
+//         saleEntity.status = "REJECTED";
+//         await salesRepo.save(saleEntity);
+//         throw new Error("Payment not approved: " + gwRes.message);
+//       }
+
+//       // se aprovado -> APPROVED e marcar cupom como usado corretamente
+//       for (const pEntity of createdPaymentEntities) {
+//         pEntity.pay.status = "APPROVED";
+//         await paymentsRepo.save(pEntity.pay);
+
+//         if (pEntity.pay.type === "COUPON" && pEntity.coupon) {
+//           // garantir que coupon é entidade e saleEntity é entidade (não array)
+//           pEntity.coupon.used = true;
+//           // registrar o id da venda que utilizou o cupom
+//           pEntity.coupon.saleUsedId = saleEntity.id;
+//           await couponsRepo.save(pEntity.coupon);
+//         }
+//       }
+
+//       // Controle de estoque: buscar entradas de inventário pelo bookId e ordenar por createdAt (nome do campo deve bater com sua entity)
+//       const saleItems = await saleItemsRepo.find({ where: { sale: saleEntity } as any });
+//       for (const it of saleItems) {
+//         let remaining = Number((it as any).quantity);
+
+//         // ATENÇÃO: 'createdAt' deve existir na sua entity Inventory; se o nome for 'created_at' ajuste aqui.
+//         const invEntries = (await invRepo.find({
+//           where: { bookId: it.bookId } as any,
+//           order: { createdAt: "ASC" } as any
+//         })) as Inventory[];
+
+//         for (const entry of invEntries) {
+//           if (remaining <= 0) break;
+//           const available = Number(entry.quantity || 0);
+//           if (available <= 0) continue;
+//           const take = Math.min(available, remaining);
+//           entry.quantity = available - take;
+//           remaining -= take;
+//           await invRepo.save(entry);
+//         }
+//         if (remaining > 0) {
+//           throw new Error(`Not enough inventory for bookId ${it.bookId}`);
+//         }
+//       }
+
+//       saleEntity.status = "APPROVED";
+//       await salesRepo.save(saleEntity);
+
+//       // marcar carrinho inativo
+//       (cart as any).active = false;
+//       await cartsRepo.save(cart);
+
+//       return { saleId: saleEntity.id, status: saleEntity.status };
+//     });
+//   }
+// }
+
+
+import { getManager } from "typeorm";
 import { SalesRepositories } from "../../repositories/SalesRepositories";
 import { SaleItemsRepository } from "../../repositories/SaleItemsRepositories";
 import { PaymentsRepository } from "../../repositories/PaymentsRepositories";
-import { CouponsRepository } from "../../repositories/CouponsRepositories";
-import { InventoryReservationsRepository } from "../../repositories/InventoryReservationsRepository";
+import { CouponsRepositories } from "../../repositories/CouponsRepositories";
 import { InventoryRepository } from "../../repositories/InventoryRepositories";
 import { CartItemsRepositories } from "../../repositories/CartItemsRepositories";
 import { CartsRepositories } from "../../repositories/CartsRepositories";
 import { CreditCardsRepositories } from "../../repositories/CreditCardsRepositories";
 import { PaymentGatewayService } from "../Payment/PaymentGatewayService";
-import { Sale } from "../../entities/Sale";
 
-/**
- * Expected payload shape:
- * {
- *   cartId: string,
- *   addressId?: string, newAddress?: {...}, saveAddress?: boolean,
- *   payments: [
- *     { type: "CARD", cardId?: string, newCard?: {...}, saveCard?: boolean, amount: number },
- *     { type: "COUPON", couponCode: string, amount: number }
- *   ],
- *   clientId?: string
- * }
- *
- * Business rules implemented:
- * - Validate reservations cover cart items
- * - Validate coupon rules (1 promo)
- * - Sum payments equals remaining total (allow epsilon)
- * - Multi-card rule: each card >= 10 except if coupons cover most making card amount < 10 allowed (RN0034/RN0035)
- * - Create sale with status OPEN, payments PENDING
- * - Capture via PaymentGatewayService (mock)
- * - If approved: mark payments APPROVED, sale APPROVED, remove reservations (stock already decremented at reserve)
- * - If rejected: mark sale REJECTED, revert reservations (return stock) and mark payments accordingly
- */
+// Entities (para tipagem)
+import { Sale } from "../../entities/Sale";
+import { Coupon } from "../../entities/Coupon";
+import { Inventory } from "../../entities/Inventory";
+import { SaleItem } from "../../entities/SaleItem";
+import { Payment } from "../../entities/Payment";
 
 export class CreateSaleService {
-  async execute(payload: any) {
-    const {
-      cartId,
-      addressId,
-      newAddress,
-      payments,
-      clientId
-    } = payload;
-
+  async execute(payload: {
+    cartId: number;
+    payments: any[];
+    addressId?: number;
+    clientId?: number;
+  }) {
+    const { cartId, payments, addressId, clientId } = payload;
     if (!cartId) throw new Error("cartId is required");
 
-    // transactionally execute sale
     return await getManager().transaction(async transactionalEntityManager => {
       const cartsRepo = transactionalEntityManager.getCustomRepository(CartsRepositories);
       const cartItemsRepo = transactionalEntityManager.getCustomRepository(CartItemsRepositories);
       const salesRepo = transactionalEntityManager.getCustomRepository(SalesRepositories);
       const saleItemsRepo = transactionalEntityManager.getCustomRepository(SaleItemsRepository);
       const paymentsRepo = transactionalEntityManager.getCustomRepository(PaymentsRepository);
-      const couponsRepo = transactionalEntityManager.getCustomRepository(CouponsRepository);
-      const invResRepo = transactionalEntityManager.getCustomRepository(InventoryReservationsRepository);
+      const couponsRepo = transactionalEntityManager.getCustomRepository(CouponsRepositories);
       const invRepo = transactionalEntityManager.getCustomRepository(InventoryRepository);
       const cardsRepo = transactionalEntityManager.getCustomRepository(CreditCardsRepositories);
 
-      const cart = await cartsRepo.findOne(cartId);
+      const cart = await cartsRepo.findOne({ where: { id: cartId }, relations: ["items"] });
       if (!cart) throw new Error("Cart not found");
-      const cartItems = await cartItemsRepo.find({ where: { carrinhoId: cartId } });
+      if (!cart.items || cart.items.length === 0) throw new Error("Cart has no items");
 
-      if (!cartItems || cartItems.length === 0) throw new Error("Cart is empty");
-
-      // compute items total using cartItem price or book price
+      // calcular total dos items usando preços do carrinho (precisa usar cart.items.price se existir)
       let itemsTotal = 0;
-      for (const it of cartItems) {
-        const unitPrice = (it as any).priceUnitario || (it as any).precoUnitario || 0;
-        itemsTotal += Number(unitPrice) * Number(it.quantidade);
+      for (const it of cart.items) {
+        // preferir price no item do carrinho (preço final em momento de adição)
+        const unitPrice = Number(it.price ?? 0);
+        itemsTotal += +(unitPrice * Number(it.quantity)); // usar + para garantir number
       }
+      // arredondar para 2 casas
+      itemsTotal = Math.round((itemsTotal + Number.EPSILON) * 100) / 100;
 
-      const freight = 0; // placeholder - implement frete calc as RF0034
-      let remainingTotal = itemsTotal + freight;
-
-      // Validate reservations: each cartItem should be fully reserved
-      for (const it of cartItems) {
-        const reservations = await invResRepo.find({ where: { itemCarrinhoId: it.id }});
-        const reservedQty = reservations.reduce((s, r) => s + Number(r.quantidade), 0);
-        if (reservedQty < Number(it.quantidade)) {
-          // attempt auto-adjust per RN0032: notify and update cart
-          // For now throw error to force user to refresh cart
-          throw new Error(`Stock changed for item ${it.livroId}. Reserved ${reservedQty} / requested ${it.quantidade}`);
-        }
-      }
-
-      // Process coupon payments from payload
-      const couponPayments = (payments || []).filter((p:any) => p.type === "COUPON");
+      const freight = 0;
       let couponTotal = 0;
-      let promoCount = 0;
-      const couponsUsed: any[] = [];
-      for (const cp of couponPayments) {
-        const coupon = await couponsRepo.findOne({ where: { codigo: cp.couponCode } as any });
-        if (!coupon) throw new Error(`Coupon ${cp.couponCode} not found`);
-        if (coupon.utilizado) throw new Error(`Coupon ${cp.couponCode} already used`);
-        if ((coupon as any).tipo === "PROMOTIONAL") promoCount++;
-        if (promoCount > 1) throw new Error("Only one promotional coupon allowed per purchase (RN0033)");
-        couponsUsed.push(coupon);
-        couponTotal += Number(cp.amount || coupon.valor || 0);
-      }
-      if (couponTotal > remainingTotal) couponTotal = remainingTotal; // cap
-      remainingTotal = Number((remainingTotal - couponTotal).toFixed(2));
-      if (remainingTotal < 0) remainingTotal = 0;
 
-      // Validate card payments sum
-      const cardPayments = (payments || []).filter((p:any) => p.type === "CARD");
-      const sumCardAmounts = cardPayments.reduce((s:any, p:any) => s + Number(p.amount || 0), 0);
-      if (Math.abs(sumCardAmounts - remainingTotal) > 0.01 && remainingTotal > 0) {
-        throw new Error("Card payments do not sum to remaining total");
-      }
-
-      // RN0034/RN0035 validation
-      const couponCovering = couponTotal > 0;
-      for (const cp of cardPayments) {
-        const amt = Number(cp.amount || 0);
-        if (!couponCovering && amt > 0 && amt < 10) {
-          throw new Error("Each card payment must be at least R$10,00 (RN0034)");
-        }
-      }
-
-      // Create sale (status OPEN)
-      const saleId = uuidv4();
-      const sale = salesRepo.create({
-        id: saleId,
+      // Criar entidade Sale — tipada explicitamente como Sale
+      let saleEntity = salesRepo.create({
         status: "OPEN",
-        dataVenda: new Date(),
-        clienteId: clientId || cart.clienteId || null,
-        enderecoEntregaId: addressId || null,
+        freightValue: freight,
+        clientId: clientId || (cart as any).clientId || null,
+        deliveryAddressId: addressId || null,
         total: itemsTotal,
-        descontoAplicado: couponTotal,
-        valorFrete: freight
-      } as any);
-      await salesRepo.save(sale);
+        appliedDiscount: couponTotal,
+        couponUsedId: null
+      } as Partial<Sale>) as Sale;
 
-      // Create sale items
-      for (const it of cartItems) {
-        const item = saleItemsRepo.create({
-          id: uuidv4(),
-          vendaId: sale.id,
-          livroId: it.livroId,
-          quantidade: it.quantidade,
-          precoUnitario: (it as any).priceUnitario || 0
-        } as any);
-        await saleItemsRepo.save(item);
+      saleEntity = await salesRepo.save(saleEntity); // aqui saleEntity é do tipo Sale (não array)
+
+      // Criar itens da venda
+      for (const it of cart.items) {
+        const si = saleItemsRepo.create({
+          sale: saleEntity,
+          bookId: (it as any).bookId,
+          quantity: it.quantity,
+          unitPrice: (it as any).price || 0
+        } as Partial<SaleItem>) as SaleItem;
+        await saleItemsRepo.save(si);
       }
 
-      // Create payment records (status PENDING)
-      const createdPaymentEntities: any[] = [];
+      // Preparar pagamentos
+      const createdPaymentEntities: Array<{ pay: Payment; coupon?: Coupon }> = [];
+
       for (const p of payments || []) {
         if (p.type === "CARD") {
-          // if newCard provided, create card entity (and save if saveCard true)
           let cardEntity = null;
-          if (p.cardId) {
-            cardEntity = await cardsRepo.findOne(p.cardId);
-            if (!cardEntity) throw new Error("Card not found");
-          } else if (p.newCard) {
+          if (p.newCard) {
+            // Ajuste dos nomes de campos para combinar com a entidade CreditCard padrão
             cardEntity = cardsRepo.create({
-              id: uuidv4(),
-              numero: p.newCard.number,
-              nomeTitular: p.newCard.name,
-              bandeira: p.newCard.brand,
-              codigoSeguranca: p.newCard.cvv,
-              validade: p.newCard.expiration,
-              preferencial: p.saveCard ? 1 : 0,
-              clienteId: clientId || cart.clienteId || null
+              number: p.newCard.cardNumber,
+              holderName: p.newCard.cardHolderName,
+              brand: p.newCard.cardBrand,
+              securityCode: p.newCard.cardCVV,
+              expiry: p.newCard.cardExpirationDate,
+              preferredCard: p.saveCard ? true : false,
+              costumerId: clientId || (cart as any).clientId || null
             } as any);
+            // Se quiser alteração: salvar somente quando saveCard === true.
             await cardsRepo.save(cardEntity);
           }
 
-          const pay = paymentsRepo.create({
-            id: uuidv4(),
-            vendaId: sale.id,
-            tipo: "CARD",
-            valor: Number(p.amount),
-            cartaoId: cardEntity ? cardEntity.id : null,
+          const payEnt = paymentsRepo.create({
+            sale: saleEntity,
+            type: "CARD",
+            value: Number(p.amount),
+            cardId: cardEntity ? cardEntity.id : (p.cardId || null),
             status: "PENDING"
-          } as any);
-          await paymentsRepo.save(pay);
-          createdPaymentEntities.push({ pay, cardInfo: p.newCard ? { number: p.newCard.number } : { cardId: p.cardId } });
+          } as Partial<Payment>) as Payment;
+          await paymentsRepo.save(payEnt);
+          createdPaymentEntities.push({ pay: payEnt });
         } else if (p.type === "COUPON") {
-          const pay = paymentsRepo.create({
-            id: uuidv4(),
-            vendaId: sale.id,
-            tipo: "COUPON",
-            valor: Number(p.amount),
-            cupomId: p.couponCode,
+          if (!p.couponCode) throw new Error("couponCode is required for COUPON payment");
+
+          // Usar findOne / findOneBy para retornar UMA entidade, não um array
+          const coupon = (await couponsRepo.findOne({ where: { code: p.couponCode } })) as Coupon | null;
+          if (!coupon) throw new Error(`Coupon ${p.couponCode} not found`);
+          if (coupon.used) throw new Error(`Coupon ${p.couponCode} already used`);
+          if (coupon.validity && new Date(coupon.validity) < new Date()) throw new Error(`Coupon ${p.couponCode} expired`);
+
+          const payEnt = paymentsRepo.create({
+            sale: saleEntity,
+            type: "COUPON",
+            value: Number(p.amount),
+            couponId: coupon.id,
             status: "PENDING"
-          } as any);
-          await paymentsRepo.save(pay);
-          createdPaymentEntities.push({ pay, couponCode: p.couponCode });
+          } as Partial<Payment>) as Payment;
+          await paymentsRepo.save(payEnt);
+          createdPaymentEntities.push({ pay: payEnt, coupon });
+        } else {
+          throw new Error(`Unsupported payment type: ${p.type}`);
         }
       }
 
-      // Call payment gateway for card payments
-      const gateway = new PaymentGatewayService();
-      const cardsToCapture = createdPaymentEntities.filter(e => e.pay.tipo === "CARD").map(e => ({ ...e.cardInfo, amount: e.pay.valor }));
-      const gwRes = await gateway.captureAll(cardsToCapture);
-      if (!gwRes.approved) {
-        // payment failed: revert reservations and mark sale REJECTED
-        for (const r of await invResRepo.find({ where: { itemCarrinhoId: cartItems.map(ci=>ci.id) } as any })) {
-          const inv = await invRepo.findOne(r.estoqueId || r.inventoryId);
-          if (inv) {
-            inv.quantity = Number(inv.quantity) + Number(r.quantidade);
-            await invRepo.save(inv);
-          }
-          await invResRepo.remove(r);
-        }
-        sale.status = "REJECTED";
-        await salesRepo.save(sale);
-        // set payments REJECTED
+      // --- 3) Aplicar cupom(s) ao total da venda ANTES da captura de pagamentos ---
+      // Somar valores dos pagamentos do tipo COUPON informados no payload
+      couponTotal = createdPaymentEntities
+        .filter(c => c.pay.type === "COUPON")
+        .reduce((acc, c) => acc + Number(c.pay.value || 0), 0);
+
+      // arredondar couponTotal
+      couponTotal = Math.round((couponTotal + Number.EPSILON) * 100) / 100;
+
+      // Atualizar saleEntity com desconto aplicado e total final
+      saleEntity.appliedDiscount = couponTotal;
+      saleEntity.total = Math.round(((itemsTotal - couponTotal + freight) + Number.EPSILON) * 100) / 100;
+      await salesRepo.save(saleEntity);
+
+      // --- Validação: somatório dos pagamentos deve bater com saleEntity.total ---
+      const sumPayments = createdPaymentEntities.reduce((acc, c) => acc + Number(c.pay.value || 0), 0);
+      const sumPaymentsRounded = Math.round((sumPayments + Number.EPSILON) * 100) / 100;
+      if (sumPaymentsRounded !== saleEntity.total) {
+        // Reverter marcando pagamentos PENDING -> REJECTED e cancelar venda
         for (const pEntity of createdPaymentEntities) {
           pEntity.pay.status = "REJECTED";
           await paymentsRepo.save(pEntity.pay);
         }
-        throw new Error("Payment not approved: " + gwRes.message);
+        saleEntity.status = "REJECTED";
+        await salesRepo.save(saleEntity);
+        throw new Error(`Sum of payments (${sumPaymentsRounded}) does not match sale total (${saleEntity.total}).`);
       }
 
-      // If approved -> mark payments APPROVED, mark sale APPROVED, remove reservations (stock already decremented)
-      for (const pEntity of createdPaymentEntities) {
-        pEntity.pay.status = "APPROVED";
-        await paymentsRepo.save(pEntity.pay);
-        if (pEntity.pay.tipo === "COUPON") {
-          const coupon = await couponsRepo.findOne({ where: { codigo: pEntity.pay.cupomId } as any });
-          if (coupon) {
-            coupon.utilizado = 1;
-            coupon.vendaUtilizadoId = sale.id;
-            await couponsRepo.save(coupon);
-          }
+      // Processar captura via gateway (exemplo)
+      const cardPaymentsToProcess: Array<{ cardId?: string; number?: string; amount: number }> = [];
+      for (const cpe of createdPaymentEntities) {
+        if (cpe.pay.type === "CARD") {
+          cardPaymentsToProcess.push({
+            cardId: cpe.pay.cardId ? String(cpe.pay.cardId) : undefined,
+            amount: Number(cpe.pay.value)
+          });
         }
       }
 
-      // Remove reservations (they already reduced stock on reserve)
-      const reservations = await invResRepo.find({ where: { itemCarrinhoId: cartItems.map(ci=>ci.id) } as any });
-      for (const r of reservations) {
-        await invResRepo.remove(r);
+      const paymentGateway = new PaymentGatewayService();
+      const gwRes = await paymentGateway.captureAll(cardPaymentsToProcess);
+
+      if (!gwRes.approved) {
+        // marcar pagamentos como REJECTED
+        for (const pEntity of createdPaymentEntities) {
+          pEntity.pay.status = "REJECTED";
+          await paymentsRepo.save(pEntity.pay);
+        }
+        saleEntity.status = "REJECTED";
+        await salesRepo.save(saleEntity);
+        throw new Error("Payment not approved: " + gwRes.message);
       }
 
-      sale.status = "APPROVED";
-      await salesRepo.save(sale);
+      // se aprovado -> APPROVED e marcar cupom como usado corretamente
+      for (const pEntity of createdPaymentEntities) {
+        pEntity.pay.status = "APPROVED";
+        await paymentsRepo.save(pEntity.pay);
 
-      // Optionally set cart inactive
-      cart.ativo = 0;
+        if (pEntity.pay.type === "COUPON" && pEntity.coupon) {
+          // garantir que coupon é entidade e saleEntity é entidade (não array)
+          pEntity.coupon.used = true;
+          // registrar o id da venda que utilizou o cupom
+          pEntity.coupon.saleUsedId = saleEntity.id;
+          await couponsRepo.save(pEntity.coupon);
+
+          // opcional: setar couponUsedId na venda (se quiser preservar o último usado)
+          saleEntity.couponUsedId = pEntity.coupon.id;
+          await salesRepo.save(saleEntity);
+        }
+      }
+
+      // Controle de estoque: buscar entradas de inventário pelo bookId e ordenar por createdAt (nome do campo deve bater com sua entity)
+      const saleItems = await saleItemsRepo.find({ where: { sale: saleEntity } as any });
+      for (const it of saleItems) {
+        let remaining = Number((it as any).quantity);
+
+        // ATENÇÃO: 'createdAt' deve existir na sua entity Inventory; se o nome for 'created_at' ajuste aqui.
+        const invEntries = (await invRepo.find({
+          where: { bookId: it.bookId } as any,
+          order: { createdAt: "ASC" } as any
+        })) as Inventory[];
+
+        for (const entry of invEntries) {
+          if (remaining <= 0) break;
+          const available = Number(entry.quantity || 0);
+          if (available <= 0) continue;
+          const take = Math.min(available, remaining);
+          entry.quantity = available - take;
+          remaining -= take;
+          await invRepo.save(entry);
+        }
+        if (remaining > 0) {
+          throw new Error(`Not enough inventory for bookId ${it.bookId}`);
+        }
+      }
+
+      saleEntity.status = "APPROVED";
+      await salesRepo.save(saleEntity);
+
+      // marcar carrinho inativo
+      (cart as any).active = false;
       await cartsRepo.save(cart);
 
-      // Return sale id to caller
-      return { saleId: sale.id, status: sale.status };
+      return { saleId: saleEntity.id, status: saleEntity.status };
     });
   }
 }
