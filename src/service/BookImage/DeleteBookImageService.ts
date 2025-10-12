@@ -6,9 +6,9 @@ export class DeleteBookImageService {
   async execute(id: number) {
     const imagesRepo = getCustomRepository(BookImagesRepositories);
     const image = await imagesRepo.findOne(id);
-    if (!image) throw new Error("Image not found");
+    if (!image) throw new Error("Imagem não encontrada");
 
     await imagesRepo.remove(image);
-    return { message: "Image removed" };
+    return { message: "Imagem apagada" };
   }
 }
