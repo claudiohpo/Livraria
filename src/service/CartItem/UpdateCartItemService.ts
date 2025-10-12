@@ -41,7 +41,6 @@ export class UpdateCartItemService {
           await invRepo.save(row);
 
           const reservation = resRepo.create({
-            id: (require('uuid')).v4(),
             inventoryId: row.id,
             cartItemId: item.id,
             quantity: take,
