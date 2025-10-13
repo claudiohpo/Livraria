@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany,} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, } from "typeorm";
 import { Category } from "../entities/Category";
 import { PriceGroup } from "../entities/PriceGroup";
 import { BookImage } from "./BookImage";
@@ -50,7 +50,7 @@ export class Book {
   images!: BookImage[];
 
   // código de barras único
-  @Column({ unique: true }) //verificar se manteremos unico
+  @Column({ unique: true }) //verificar se manteremos unico ***
   barcode!: string;
 
   @Column("decimal", { precision: 10, scale: 2 })

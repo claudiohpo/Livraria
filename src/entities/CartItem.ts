@@ -3,7 +3,7 @@ import { Cart } from "./Cart";
 
 @Entity({ name: "item_carrinho" })
 export class CartItem {
-  @PrimaryGeneratedColumn() 
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: "integer" })
@@ -16,17 +16,16 @@ export class CartItem {
   cartId: string;
 
   @Column({ type: "numeric", precision: 10, scale: 2, nullable: true })
-  price?: number; 
+  price?: number;
 
   @ManyToOne(() => Cart, cart => cart.items)
-  @JoinColumn({ name: "cartId" }) 
+  @JoinColumn({ name: "cartId" })
   cart: Cart;
-
 
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
   updated_at: Date;
-  
+
 }

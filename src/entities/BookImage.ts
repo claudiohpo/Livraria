@@ -1,8 +1,7 @@
-import {
-  Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn,} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn, } from "typeorm";
 import { Book } from "./Book";
 
-@Entity("imagens_livros") 
+@Entity("imagens_livros")
 export class BookImage {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -11,7 +10,7 @@ export class BookImage {
   url!: string; // URL da imagem 
 
   @Column({ nullable: true, type: "text" })
-  caption?: string; 
+  caption?: string;
 
   // relacionamento com livro (FK livro_id)
   @ManyToOne(() => Book, (book) => book.images, { onDelete: "CASCADE" })
