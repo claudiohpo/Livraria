@@ -16,4 +16,4 @@ interface ICostumerRequest {
     card: ICreditCardRequest[]; //RN0024
 }
 
-export {ICostumerRequest};
+export { ICostumerRequest };

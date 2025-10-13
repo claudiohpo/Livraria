@@ -1,4 +1,4 @@
-import {Router} from "express";
+import { Router } from "express";
 
 import { CreateBookImageController } from "../controller/book/CreateBookImageController";
 import { ListBookImageController } from "../controller/book/ListBookImageController";

@@ -20,9 +20,4 @@ router.put("/:id", updateCartController.handle.bind(updateCartController));
 router.delete("/:id", deleteCartController.handle.bind(deleteCartController));
 router.get("/costumer/:clienteId", listCartController.handle.bind(listCartController));
 
-
-
-
-
-
 export default router;

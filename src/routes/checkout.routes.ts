@@ -1,4 +1,5 @@
-import { Router, Request,Response } from "express";
+import { Router } from "express";
+
 import { CreateCheckoutController } from "../controller/checkout/CreateCheckoutController";
 import { ListCheckoutController } from "../controller/checkout/ListCheckoutController";
 

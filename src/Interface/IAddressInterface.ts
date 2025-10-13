@@ -1,4 +1,4 @@
-interface IAddressRequest{
+interface IAddressRequest {
     id: number;
     residenceType: string;
     streetType: string;

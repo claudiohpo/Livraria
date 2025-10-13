@@ -19,4 +19,4 @@ interface IBookRequest {
     barcode: string;
     cost: number;
 }
-export {IBookRequest};
+export { IBookRequest };

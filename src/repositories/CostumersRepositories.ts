@@ -5,4 +5,4 @@ import { Costumer } from "../entities/Costumer";
 class CostumersRepositories extends Repository<Costumer> {
 }
 
-export {CostumersRepositories}
+export { CostumersRepositories }

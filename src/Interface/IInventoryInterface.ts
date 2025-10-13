@@ -1,7 +1,7 @@
 interface IInventoryRequest {
     id?: number;
     quantity: number;
-    unitCost: string; 
+    unitCost: string;
     entryDate: Date;
     invoiceNumber?: string | null;
     bookId: string;

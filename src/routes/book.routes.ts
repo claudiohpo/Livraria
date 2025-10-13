@@ -1,9 +1,9 @@
-import { Router} from "express";
+import { Router } from "express";
 
 import { CreateBookController } from "../controller/book/CreateBookController";
 import { ListBookController } from "../controller/book/ListBookController";
 import { GetBookByIdController } from "../controller/book/GetBookByIdController";
- 
+
 
 const router = Router();
 

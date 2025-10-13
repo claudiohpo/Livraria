@@ -8,4 +8,4 @@ interface ICreditCardRequest {
     preferredCard: boolean;
 }
 
-export {ICreditCardRequest};
+export { ICreditCardRequest };

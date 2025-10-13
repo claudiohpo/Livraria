@@ -1,4 +1,4 @@
-interface InventoryReservation{
+interface InventoryReservation {
     id?: number;
     inventoryId: string;
     cartItemId: string;
