@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import { CreateBookService } from "../../service/Book/CreateBookService";
 
 class CreateBookController {
-    async handle(request: Request, response: Response){
-        const { id,author, category, year, title, publisher, edition, ISBN, pages, synopsis, dimensions, pricegroup, barcode,cost} = request.body; 
-        //Lembrar que nas dimensoes o format deve ser Altura, largura, peso e profundidade | A x L x P x P |
-        
+    async handle(request: Request, response: Response) {
+        const { id, author, category, year, title, publisher, edition, ISBN, pages, synopsis, dimensions, pricegroup, barcode, cost } = request.body;
+        //Lembrar que nas dimensoes o formato deve ser Altura, largura, peso e profundidade | A x L x P x P |
+
         const createBookService = new CreateBookService();
-        
+
         try {
             const product = await createBookService.execute({
                 author,
@@ -24,7 +24,7 @@ class CreateBookController {
                 barcode,
                 cost
             });
-            return response.status(201).json(product); 
+            return response.status(201).json(product);
         } catch (error) {
             if (error instanceof Error) {
                 return response.status(400).json({ message: error.message });

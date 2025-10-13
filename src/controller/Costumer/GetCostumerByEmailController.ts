@@ -22,9 +22,9 @@ export class GetCostumerByEmailController {
 
       const repo = getCustomRepository(CostumersRepositories);
 
-      
+
       const costumer = await repo.createQueryBuilder("c")
-        .leftJoinAndSelect("c.addresses", "a") 
+        .leftJoinAndSelect("c.addresses", "a")
         .where("c.email = :email", { email })
         .getOne();
 

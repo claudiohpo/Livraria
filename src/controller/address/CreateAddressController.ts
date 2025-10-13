@@ -8,11 +8,11 @@ export class CreateAddressController {
     try {
       const data = request.body;
       const costumerId = data.costumerId;
-      if (!costumerId) return response.status(400).json({ error: "costumerId is required" });
+      if (!costumerId) return response.status(400).json({ error: "costumerId é obrigatório" });
 
       const costumersRepo = getCustomRepository(CostumersRepositories);
       const costumer = await costumersRepo.findOne({ where: { id: costumerId } });
-      if (!costumer) return response.status(404).json({ error: "Costumer not found" });
+      if (!costumer) return response.status(404).json({ error: "Cliente não encontrado" });
 
       const service = new CreateAddressService();
       const address = await service.execute(data, costumer);

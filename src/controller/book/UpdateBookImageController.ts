@@ -12,7 +12,7 @@ class UpdateBookImageController {
         id: Number(id),
         url,
         caption,
-        bookId: 0, // não usado no updateService (mas interface exige campo)
+        bookId: 0, // não utilizado no update, mas necessário para a tipagem
       });
       return response.json(image);
     } catch (error) {

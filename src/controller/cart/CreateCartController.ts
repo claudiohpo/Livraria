@@ -10,7 +10,7 @@ class CreateCartController {
       return response.status(201).json(cart);
     } catch (err: any) {
       if (err instanceof Error) return response.status(400).json({ message: err.message });
-      return response.status(500).json({ message: "Internal server error" });
+      return response.status(500).json({ message: "Erro interno do Servidor" });
     }
   }
 }

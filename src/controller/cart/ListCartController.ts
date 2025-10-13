@@ -19,7 +19,7 @@ class ListCartController {
       }
       return response
         .status(500)
-        .json({ message: "Internal server error" });
+        .json({ message: "Erro interno do Servidor" });
     }
   }
 }

@@ -16,7 +16,7 @@ class AddCartItemController {
       return response.status(201).json(item);
     } catch (err: any) {
       if (err instanceof Error) return response.status(400).json({ message: err.message });
-      return response.status(500).json({ message: "Internal server error" });
+      return response.status(500).json({ message: "Erro interno do Servidor" });
     }
   }
 }

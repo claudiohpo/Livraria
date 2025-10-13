@@ -1,4 +1,4 @@
-import { Request,Response } from "express";
+import { Request, Response } from "express";
 import { ListSaleService } from "../../service/Checkout/ListSaleService";
 
 export class ListCheckoutController {
