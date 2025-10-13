@@ -33,7 +33,7 @@ export class AddCartItemService {
       const book = await bookRepo.findOne(itemIdNum);
       if (!book) throw new Error("Livro não encontrado");
 
-      // 1) verificar total disponível nos lotes (FIFO)
+      // Verificar estoque disponível
       const availableRows = await invRepo.find({
         where: { bookId: itemIdNum } as any,
         order: { entryDate: "ASC" } // ordem FIFO
@@ -51,8 +51,8 @@ export class AddCartItemService {
         priceNum = book && Number((book as any).price) ? Number((book as any).price) : 0;
       }
 
-      // 2) criar ou atualizar item do carrinho
-      // Relação parcial { cart: { id: cartIdNum } } para evitar problemas de tipagem.
+      // Criar ou atualizar o CartItem
+      // Relacionar pelo id do carrinho e id do livro (bookId)
       let cartItem = await cartItemsRepo.findOne({
         where: { cart: { id: cartIdNum }, bookId: itemIdNum } as any
       });
@@ -75,7 +75,7 @@ export class AddCartItemService {
         await cartItemsRepo.save(cartItem);
       }
 
-      // 3) reservar do inventário por FIFO e criar InventoryReservation
+      // Reservar o estoque (criar registros em InventoryReservation e decrementar Inventory)
       let toReserve = qty;
       for (const row of availableRows) {
         if (toReserve <= 0) break;
@@ -87,12 +87,12 @@ export class AddCartItemService {
         row.quantity = Number(row.quantity) - take;
         await invRepo.save(row);
 
-        // criar reservation (usando save com as chaves estrangeiras para não depender de create overload)
+        // Criar reserva
         const reservationData: any = {
           inventoryId: row.id,
           cartItemId: cartItem.id,
           quantity: take,
-          expiresAt: null // TTL / job externo gerencia expiração
+          expiresAt: null // TTL / job externo gerencia expiração  *** Implementar no futuro
         };
         await resRepo.save(reservationData);
 

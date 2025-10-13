@@ -1,14 +1,13 @@
 import { getCustomRepository, getRepository } from "typeorm";
 import { CartsRepositories } from "../../repositories/CartsRepositories";
 import { IUpdateCartRequest } from "../../Interface/ICartInterface";
-import { Cart } from "../../entities/Cart";
 
 export class UpdateCartService {
   async execute(cartId: string, data: IUpdateCartRequest) {
-    if (!cartId) throw new Error("cartId is required");
+    if (!cartId) throw new Error("cartId é obrigatório");
     const cartsRepo = getCustomRepository(CartsRepositories);
     const cart = await cartsRepo.findOne(cartId);
-    if (!cart) throw new Error("Cart not found");
+    if (!cart) throw new Error("Carrinho não encontrado");
 
     if (data.active !== undefined) cart.active = data.active;
     if (data.appliedDiscount !== undefined) cart.appliedDiscount = Number(data.appliedDiscount);

@@ -150,16 +150,6 @@ export class UpdateCostumerService {
         }
       }
 
-      // // deletions (replace behavior)
-      // const existingAddresses = (await addressRepo.find({ where: { costumer: { id: costumer.id } } as any })) as Address[];
-      // console.log("existing addresses in DB (count):", existingAddresses.length);
-      // for (const ex of existingAddresses) {
-      //   if (!incomingIds.includes(Number(ex.id))) {
-      //     console.log(`Removing address id=${ex.id} because not in payload`);
-      //     await addressRepo.remove(ex);
-      //   }
-      // }
-
       const billingAddCount = await addressRepo.count({ where: { costumer: { id: costumer.id }, type: "BILLING" } as any });
       const deliveryAddCount = await addressRepo.count({ where: { costumer: { id: costumer.id }, type: "DELIVERY" } as any });
       console.log("billingAddCount:", billingAddCount, "deliveryAddCount:", deliveryAddCount);
@@ -229,19 +219,10 @@ export class UpdateCostumerService {
         }
       }
 
-      // // deletar os cartões que não vieram no payload (replace)
-      // const existingCards = (await cardRepo.find({ where: { costumer: { id: costumer.id } } as any })) as CreditCard[];
-      // console.log("existing cards in DB (count):", existingCards.length);
-      // for (const ex of existingCards) {
-      //   if (!incomingCardIds.includes(Number(ex.id))) {
-      //     console.log(`Removing card id=${ex.id} because not in payload`);
-      //     await cardRepo.remove(ex);
-      //   }
-      // }
     } else {
       console.log("No incoming cards provided - skipping card sync.");
     }
-   
+
     // Salvar client, apenas campos escalares do cliente (evita regravar as relações com valores antigos)
     const updatePayload: any = {
       id: costumer.id,

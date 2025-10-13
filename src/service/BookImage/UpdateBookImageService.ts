@@ -6,11 +6,11 @@ export class UpdateBookImageService {
   // atualiza url e/ou caption de uma imagem
   async execute(data: IBookImageRequest) {
     const { id, url, caption } = data;
-    if (!id) throw new Error("Image id is required");
+    if (!id) throw new Error("O Id da imagem é obrigatório");
 
     const imagesRepo = getCustomRepository(BookImagesRepositories);
     const image = await imagesRepo.findOne(id, { relations: ["book"] });
-    if (!image) throw new Error("Image not found");
+    if (!image) throw new Error("Imagem não encontrada");
 
     image.url = url ?? image.url;
     image.caption = caption ?? image.caption;

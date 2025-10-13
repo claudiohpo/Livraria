@@ -6,7 +6,7 @@ export class DeleteAddressService {
     async execute(id: number) {
         const addressRepo = getCustomRepository(AddressesRepositories);
         const address = await addressRepo.findOne(id);
-        if (!address) throw new Error("Endereço não encontrado"); 
+        if (!address) throw new Error("Endereço não encontrado");
         await addressRepo.remove(address);
         return `Endereço id: ${id} removido com sucesso`;
     }

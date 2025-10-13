@@ -3,16 +3,10 @@ import { CartItemsRepositories } from "../../repositories/CartItemsRepositories"
 import { InventoryRepository } from "../../repositories/InventoryRepositories";
 import { InventoryReservationsRepository } from "../../repositories/InventoryReservationsRepository";
 import { ICartItemRequest } from "../../Interface/ICartItemInterface";
-/**
- * Quando aumentar quantidade -> tenta reservar mais (FIFO)
- * Quando diminuir -> libera reservas (do mais recente reservado para o mais antigo)
- */
-
-
 
 export class UpdateCartItemService {
   public async execute({ cartId, itemId: itemId, quantity }: ICartItemRequest) {
-    if (!quantity || quantity <= 0) throw new Error("Quantity must be > 0");
+    if (!quantity || quantity <= 0) throw new Error("Quantidade deve ser maior que zero");
 
     return await getManager().transaction(async manager => {
       const itemsRepo = manager.getCustomRepository(CartItemsRepositories);
@@ -20,17 +14,17 @@ export class UpdateCartItemService {
       const resRepo = manager.getCustomRepository(InventoryReservationsRepository);
 
       const item = await itemsRepo.findOne({ where: { id: itemId, cartId } as any });
-      if (!item) throw new Error("Cart item not found");
+      if (!item) throw new Error("Item do carrinho não encontrado");
 
       const diff = quantity - Number(item.quantity);
 
       if (diff === 0) return item;
 
       if (diff > 0) {
-        // need to reserve additional units FIFO from inventory
+        // Precisa reservar mais (do mais antigo disponível para o mais recente)
         const availableRows = await invRepo.find({ where: { bookId: item.bookId }, order: { entryDate: "ASC" } as any });
         let availableTotal = availableRows.reduce((s, r) => s + Number(r.quantity), 0);
-        if (availableTotal < diff) throw new Error("Not enough stock to increase quantity");
+        if (availableTotal < diff) throw new Error("Estoque insuficiente para atualizar a quantidade do item no carrinho");
 
         let toReserve = diff;
         for (const row of availableRows) {
@@ -52,18 +46,18 @@ export class UpdateCartItemService {
       } else {
         // diff < 0 -> precisa liberar reservas (do mais recente reservado para o mais antigo)
         let toRelease = Math.abs(diff);
-        // fetch reservations for this item in LIFO (release most recently reserved first)
+        // procurar reservas associadas ao item do carrinho, da mais recente para a mais antiga
         const reservations = await resRepo.find({ where: { cartItemId: item.id }, order: { createdAt: "DESC" } as any });
         for (const r of reservations) {
           if (toRelease <= 0) break;
           const releaseQty = Math.min(r.quantity, toRelease);
-          // update inventory row
+          // Atualizar inventário
           const inv = await invRepo.findOne(r.inventoryId);
           if (inv) {
             inv.quantity = Number(inv.quantity) + releaseQty;
             await invRepo.save(inv);
           }
-          // update or delete reservation
+          // Atualizar ou remover reserva
           if (r.quantity > releaseQty) {
             r.quantity = Number(r.quantity) - releaseQty;
             await resRepo.save(r);

@@ -6,8 +6,8 @@ export class ListInventoryService {
     const inventoryRepo = getRepository(Inventory);
     const where: any = {};
     if (filter?.bookId) where.bookId = filter.bookId;
-    
+
     const entries = await inventoryRepo.find({ where, order: { createdAt: "DESC" } });
     return entries;
-    }
+  }
 }

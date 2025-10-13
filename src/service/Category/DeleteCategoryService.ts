@@ -14,10 +14,8 @@ export class DeleteCategoryService {
     const categoryId = category.id;
     const categoryName = category.name;
 
-    // Se desejar, verifique vínculos com livros aqui antes de remover.
     await categoriesRepo.remove(category);
 
-    // montar a mensagem sem aspas internas para evitar escapes no JSON
     return `Categoria ${categoryName} (id: ${categoryId}) removida com sucesso.`;
   }
 }

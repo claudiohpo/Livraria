@@ -9,6 +9,6 @@ export class DeleteBookImageService {
     if (!image) throw new Error("Imagem não encontrada");
 
     await imagesRepo.remove(image);
-    return { message: "Imagem apagada" };
+    return { message: `Imagem do livro ${id} removida com sucesso` };
   }
 }

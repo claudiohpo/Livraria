@@ -3,13 +3,13 @@ import { CartsRepositories } from "../../repositories/CartsRepositories";
 
 export class DeleteCartService {
   async execute(cartId: string) {
-    if (!cartId) throw new Error("cartId is required");
+    if (!cartId) throw new Error("cartId é obrigatório");
 
     const cartsRepo = getCustomRepository(CartsRepositories);
     const cart = await cartsRepo.findOne(cartId);
-    if (!cart) throw new Error("Cart not found");
+    if (!cart) throw new Error("Carrinho não encontrado");
 
-    // Soft delete -> set active false
+    // Soft delete: marcar como inativo
     cart.active = false;
     await cartsRepo.save(cart);
 

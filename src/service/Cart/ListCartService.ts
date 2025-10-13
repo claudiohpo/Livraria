@@ -3,7 +3,7 @@ import { Cart } from "../../entities/Cart";
 
 export class ListCartService {
   async execute(clienteId: string, activeOnly: boolean = true) {
-    if (!clienteId) throw new Error("clienteId is required");
+    if (!clienteId) throw new Error("clienteId é obrigatório");
 
     const cartRepo = getRepository(Cart);
 

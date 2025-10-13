@@ -10,8 +10,6 @@ export class DeletePriceGroupService {
     const group = await repo.findOne(id);
     if (!group) throw new Error("Grupo de precificação não encontrado.");
 
-    // evita remoção se existirem livros associados
-    // assumimos que TypeORM criou a coluna pricegroupId em books
     const linkedCount = await booksRepo
       .createQueryBuilder("book")
       .leftJoin("book.pricegroup", "pg")
@@ -22,10 +20,10 @@ export class DeletePriceGroupService {
       throw new Error(`Não é possível remover: existem ${linkedCount} livro(s) associados a este grupo.`);
     }
 
-    // capture name e id antes de remover (para evitar 'undefined' depois)
+    // captura name e id antes de remover (para evitar 'undefined' depois)
     const groupId = group.id;
     const groupName = group.name;
-    
+
     await repo.remove(group);
     return `Grupo de precificação ${groupName} (id: ${groupId}) removido com sucesso.`;
   }

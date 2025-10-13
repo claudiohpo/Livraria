@@ -4,7 +4,7 @@ import { IAddressRequest } from "../../Interface/IAddressInterface";
 import { Costumer } from "../../entities/Costumer";
 
 export class CreateAddressService {
-    // async execute(data: IAddressRequest, costumer: Costumer[]) {
+
     async execute(data: IAddressRequest, costumer: Costumer) {
         const addressesRepo = getCustomRepository(AddressesRepositories);
 

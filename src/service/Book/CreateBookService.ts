@@ -6,21 +6,7 @@ import { PriceGroupRepository } from "../../repositories/PriceGroupRepository";
 
 export class CreateBookService {
   async execute(data: IBookRequest) {
-    const {
-      author,
-      category, // array de ids de categoria
-      year,
-      title,
-      publisher,
-      edition,
-      ISBN,
-      pages,
-      synopsis,
-      dimensions,
-      pricegroup, // id do grupo de precificação
-      barcode,
-      cost,       // agora vem direto da interface
-    } = data;
+    const { author, category, year, title, publisher, edition, ISBN, pages, synopsis, dimensions, pricegroup, barcode, cost, } = data;
 
     // RN0011 - validação obrigatória
     if (
@@ -77,7 +63,7 @@ export class CreateBookService {
       throw new Error("Custo do livro (cost) deve ser informado para cálculo do preço.");
     }
 
-    // supondo que o PriceGroup tem um campo `margin` (ex.: 0.30 = 30%)
+    // Margem do pricegroup
     const margin = Number((group as any).margin ?? 0);
     if (isNaN(margin)) {
       throw new Error("Margem inválida no grupo de precificação.");

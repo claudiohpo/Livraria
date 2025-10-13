@@ -2,41 +2,46 @@ import { getRepository } from "typeorm";
 import { Book } from "../../entities/Book";
 
 export class GetBookByIdService {
-  async execute(idParam: string | number) {
-    if (idParam === undefined || idParam === null) {
-      throw new Error("ID do livro não informado");
+  async execute(id: number) {
+    if (!id || isNaN(Number(id))) {
+      throw new Error("ID do livro inválido ou não informado");
     }
 
-    // se o projeto usa id numérico:
-    const idAsNumber = typeof idParam === "string" && /^\d+$/.test(idParam) ? Number(idParam) : undefined;
     const bookRepo = getRepository(Book);
 
-    // Se sua entidade usa number (PrimaryGeneratedColumn) busque por number,
-    // caso use uuid/string, passe a string diretamente.
-    const where = idAsNumber !== undefined ? { id: idAsNumber } : { id: idParam };
-
     const book = await bookRepo.findOne({
-      where,
-      // relations: ["categories", "priceGroup", "images"] // opcional: descomente se quiser trazer relações
+      where: { id },
     });
 
     if (!book) {
-      const msg = `Livro não encontrado com id: ${idParam}`;
-      // use um tipo de erro custom se preferir
-      throw new Error(msg);
+      throw new Error(`Livro não encontrado com id: ${id}`);
     }
 
-    // aqui você pode mapear para um DTO (remover campos sensíveis)
+    // Retorna todas as informações relevantes do livro
     return {
       id: book.id,
-      title: (book as any).title ?? (book as any).titulo ?? (book as any).name ?? null,
+      title: (book as any).title ?? null,
       author: (book as any).author ?? null,
-      isbn: (book as any).ISBN ?? (book as any).isbn ?? null,
-      year: (book as any).year ?? (book as any).ano ?? null,
+      category: (book as any).category ?? null,
+      year: (book as any).year ?? null,
+      publisher: (book as any).publisher ?? null,
+      edition: (book as any).edition ?? null,
+      ISBN: (book as any).ISBN ?? (book as any).isbn ?? null,
       pages: (book as any).pages ?? null,
-      price: (book as any).valorVenda ?? (book as any).price ?? null,
+      synopsis: (book as any).synopsis ?? null,
+      dimensions: (book as any).dimensions ?? {
+        height: (book as any).height ?? null,
+        width: (book as any).width ?? null,
+        depth: (book as any).depth ?? null,
+        weight: (book as any).weight ?? null,
+      },
+      pricegroup: (book as any).pricegroup ?? null,
+      barcode: (book as any).barcode ?? null,
+      cost: (book as any).cost ?? null,
+      price: (book as any).price ?? (book as any).valorVenda ?? null,
       active: (book as any).active ?? (book as any).ativo ?? true,
-      // adicione outras propriedades que deseja retornar...
+      created_at: (book as any).created_at ?? null,
+      updated_at: (book as any).updated_at ?? null,
     };
   }
 }

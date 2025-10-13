@@ -15,7 +15,7 @@ export class CreateCreditCardService {
             cardCVV: data.cardCVV,
             cardBrand: data.cardBrand,
             preferredCard: Boolean(data.preferredCard),
-            costumer: Array.isArray(costumer) ? costumer[0] : costumer, //essa linha tava comentada, testar depois no fluxo de criação de Cliente
+            costumer: Array.isArray(costumer) ? costumer[0] : costumer, //alterado , testar depois no fluxo de criação de Cliente
             // costumer: costumer, 
         });
 

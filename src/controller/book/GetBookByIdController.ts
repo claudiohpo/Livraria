@@ -7,7 +7,8 @@ class GetBookByIdController {
     const service = new GetBookByIdService();
 
     try {
-      const book = await service.execute(id);
+      const bookId = Number(id);
+      const book = await service.execute(bookId);
       return response.status(200).json(book);
     } catch (err: any) {
       if (err instanceof Error) {

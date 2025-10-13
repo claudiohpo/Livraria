@@ -1,5 +1,5 @@
 import { getCustomRepository } from "typeorm";
-import { CostumersRepositories} from "../../repositories/CostumersRepositories";
+import { CostumersRepositories } from "../../repositories/CostumersRepositories";
 
 export class DeleteCostumerService {
     async execute(id: number): Promise<string> {

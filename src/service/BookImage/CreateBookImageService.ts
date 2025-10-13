@@ -11,7 +11,7 @@ export class CreateBookImageService {
     const booksRepo = getCustomRepository(BooksRepositories);
     const book = await booksRepo.findOne(bookId);
     if (!book) {
-      throw new Error("Book not found");
+      throw new Error("Livro não encontrado para associar a imagem.");
     }
 
     const imagesRepo = getCustomRepository(BookImagesRepositories);

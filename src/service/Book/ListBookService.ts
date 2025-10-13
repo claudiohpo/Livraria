@@ -10,7 +10,7 @@ export class ListBookService {
         title?: string;
         publisher?: string;
         edition?: string;
-        ISBN?: string;  
+        ISBN?: string;
         pages?: number;
         synopsis?: string;
         dimensions?: { height?: number; width?: number; depth?: number; weight?: number; };

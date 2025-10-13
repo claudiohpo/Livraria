@@ -3,13 +3,13 @@ import { Cart } from "../../entities/Cart";
 
 export class GetCartService {
   async execute(cartId: string) {
-    if (!cartId) throw new Error("cartId is required");
+    if (!cartId) throw new Error("cartId é obrigatório");
 
     // carregar os items do carrinho
     const cartRepo = getRepository(Cart);
     const cart = await cartRepo.findOne(cartId, { relations: ["items"] });
 
-    if (!cart) throw new Error("Cart not found");
+    if (!cart) throw new Error("Carrinho não encontrado");
     return cart;
   }
 }

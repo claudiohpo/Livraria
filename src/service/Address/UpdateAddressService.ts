@@ -23,6 +23,5 @@ export class UpdateAddressService {
     address.observations = observations ?? address.observations;
     await addressRepo.save(address);
     return address;
-  } 
+  }
 }
-    

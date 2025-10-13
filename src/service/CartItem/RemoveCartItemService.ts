@@ -15,10 +15,10 @@ export class RemoveCartItemService {
       const item = await itemsRepo.findOne({ where: { id: Number(itemId), cartId: Number(cartId) } });
       if (!item) throw new Error("Item do carrinho não encontrado");
 
-      // find reservations for this cart item
+      // Procurar reservas associadas ao item do carrinho
       const reservations = await resRepo.find({ where: { cartItemId: item.id } as any });
       for (const r of reservations) {
-        // restore inventory row quantity
+        // Restaurar estoque no inventário
         const inv = await invRepo.findOne(r.inventoryId);
         if (inv) {
           inv.quantity = Number(inv.quantity) + Number(r.quantity);
@@ -27,7 +27,7 @@ export class RemoveCartItemService {
         await resRepo.delete(r.id);
       }
 
-      // remove cart item
+      // Remover o item do carrinho
       await itemsRepo.delete(item.id);
       return {
         message: `Item ${item.id} removido do carrinho ${cartId} com sucesso`,

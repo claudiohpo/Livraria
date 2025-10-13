@@ -1,8 +1,6 @@
 import { getCustomRepository } from "typeorm";
 import bcrypt from "bcryptjs";
 import { CostumersRepositories } from "../../repositories/CostumersRepositories";
-import { AddressesRepositories } from "../../repositories/AddressesRepositories";
-//import { Cread } from "../../repositories/CardsRepositories";
 import { ICostumerRequest } from "../../Interface/ICostumerInterface";
 import { CreateCreditCardService } from "../CreditCard/CreateCreditCardService";
 import { CreateAddressService } from "../Address/CreateAddressService";
