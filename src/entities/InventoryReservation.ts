@@ -5,7 +5,7 @@ export class InventoryReservation {
   @PrimaryGeneratedColumn()
   id: number;
 
- @Column({ type: "int" })
+  @Column({ type: "int" })
   inventoryId: number;
 
   @Column({ type: "int" })
@@ -20,6 +20,6 @@ export class InventoryReservation {
   @CreateDateColumn({ name: "created_at" })
   createdAt: Date;
 
-    @UpdateDateColumn({ name: "updated_at" })
-    updatedAt: Date;
+  @UpdateDateColumn({ name: "updated_at" })
+  updatedAt: Date;
 }

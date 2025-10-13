@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
-@Entity({ name: "estoque" }) 
+@Entity({ name: "estoque" })
 export class Inventory {
-  @PrimaryGeneratedColumn() 
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: "integer", name: "quantidade" })
@@ -17,10 +17,10 @@ export class Inventory {
   @Column({ type: "varchar", length: 4000, name: "notaFiscal", nullable: true })
   invoiceNumber: string | null;
 
-  @Column({ type: "int", name: "livroId" }) 
+  @Column({ type: "int", name: "livroId" })
   bookId: number;
 
-  @Column({ type: "int", name: "fornecedorId", nullable: true }) 
+  @Column({ type: "int", name: "fornecedorId", nullable: true })
   supplierId: number | null;
 
   @CreateDateColumn({ name: "created_at" })
