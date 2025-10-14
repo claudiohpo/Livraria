@@ -1,15 +1,41 @@
 import { Request, Response } from "express";
-import { ShippingService } from "../../service/Shipping/ShippingService";
+import { CreateShipmentService } from "../../service/Shipping/CreateShipmentService";
 
 export class SelectShippingController {
     async handle(req: Request, res: Response) {
         try {
-            const { saleId, quoteId, serviceId } = req.body;
-            if (!saleId || !quoteId || !serviceId) return res.status(400).json({ error: "saleId, quoteId e serviceId são obrigatórios" });
+            // Duas formas aceitas:
+            // 1) enviar os campos diretos: { saleId, freightValue, carrier, serviceName, trackingCode? }
+            // 2) enviar selectedService: { saleId, selectedService: { price, carrier, name, id } }
+            const { saleId, freightValue, carrier, serviceName, trackingCode, selectedService } = req.body;
 
-            const svc = new ShippingService();
-            const result = await svc.createShipmentFromQuote({ saleId: Number(saleId), quoteId: Number(quoteId), serviceId });
-            return res.json(result);
+            if (!saleId) return res.status(400).json({ error: "saleId é obrigatório" });
+
+            let fv = freightValue;
+            let carr = carrier;
+            let sname = serviceName;
+            let track = trackingCode ?? null;
+
+            if (selectedService) {
+                fv = fv ?? (selectedService.price ?? selectedService.value ?? selectedService.custom_price ?? selectedService.price_total);
+                carr = carr ?? (selectedService.carrier ?? selectedService.sender ?? selectedService.service_name ?? selectedService.name);
+                sname = sname ?? (selectedService.service_name ?? selectedService.name ?? selectedService.service);
+            }
+
+            if (typeof fv === "undefined" || fv === null) {
+                return res.status(400).json({ error: "freightValue (valor do frete) é obrigatório" });
+            }
+
+            const svc = new CreateShipmentService();
+            const shipment = await svc.execute({
+                saleId: Number(saleId),
+                freightValue: Number(fv),
+                carrier: carr ?? null,
+                serviceName: sname ?? null,
+                trackingCode: track,
+            });
+
+            return res.status(201).json(shipment);
         } catch (err: any) {
             console.error("SelectShippingController:", err);
             return res.status(500).json({ error: err.message || "Erro ao selecionar serviço" });
