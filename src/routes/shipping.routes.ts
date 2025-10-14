@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { QuoteShippingController } from "../controller/shipping/QuoteShippingController";
-import { SelectShippingController } from "../service/Shipping/SelectShippingController";
+import { SelectShippingController } from "../controller/shipping/SelectShippingController";
 
 const router = Router();
 

@@ -1,5 +1,3 @@
-// src/service/Shipping/ShippingService.ts
-// Substitua seu arquivo antigo por este (mantém comportamento e retornos compatíveis)
 import { getManager } from "typeorm";
 import { ShipmentQuote } from "../../entities/ShipmentQuote";
 import { Shipment } from "../../entities/Shipment";
