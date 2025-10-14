@@ -276,7 +276,9 @@ export class ShippingService {
       const width = Math.max(1, Number(dims.width || 1));
       const height = Math.max(1, Number(dims.height || 1));
       const length = Math.max(1, Number(dims.depth || dims.length || 1));
-      const weight = Math.max(0.01, Number(dims.weight || 0.1));
+      // const weight = Math.max(0.01, Number(dims.weight || 0.1));
+      const weight = Math.max(0.01, Number(dims.weight || 100) / 1000);
+
       return {
         id: String(it.bookId ?? idx),
         width,
