@@ -12,6 +12,7 @@ import checkoutRoutes from "./routes/checkout.routes";
 import addressRoutes from "./routes/address.routes";
 import creditcardRoutes from "./routes/creditcards.routes";
 import coupon from "./routes/coupons.routes";
+import shippingRoutes from "./routes/shipping.routes";
 
 
 const router = Router();
@@ -29,5 +30,6 @@ router.use("/checkout", checkoutRoutes);
 router.use("/address", addressRoutes);
 router.use("/creditcards", creditcardRoutes);
 router.use("/coupons", coupon);
+router.use("/shipping", shippingRoutes);
 
 export {router};

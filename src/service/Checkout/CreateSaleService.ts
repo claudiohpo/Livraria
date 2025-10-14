@@ -8,6 +8,9 @@ import { CartItemsRepositories } from "../../repositories/CartItemsRepositories"
 import { CartsRepositories } from "../../repositories/CartsRepositories";
 import { CreditCardsRepositories } from "../../repositories/CreditCardsRepositories";
 import { PaymentGatewayService } from "../Payment/PaymentGatewayService";
+import { AddressesRepositories } from "../../repositories/AddressesRepositories";
+import { BooksRepositories } from "../../repositories/BooksRepositories";
+import { ShippingService } from "../Shipping/ShippingService";
 
 import { Sale } from "../../entities/Sale";
 import { Coupon } from "../../entities/Coupon";
@@ -49,7 +52,80 @@ export class CreateSaleService {
       // arredondar para 2 casas
       itemsTotal = Math.round((itemsTotal + Number.EPSILON) * 100) / 100;
 
-      const freight = 0;
+      // const freight = 0; //Antes sem o frete estava assim, adicionei o serviço de frete abaixo
+      // calcular frete real usando ShippingService e dimensões dos livros (Resumo abaixo)
+      /* Busca o endereço de entrega para obter o CEP
+      Busca os livros no carrinho para obter dimensões e peso
+      Chama ShippingService.calculateQuote() para obter a cotação
+      Usa o lowestPrice da cotação como valor do frete (ou 0 se não houver)
+      Se não houver endereço definido, frete fica 0 (regra do sistema)  */
+      
+      const booksRepo = transactionalEntityManager.getCustomRepository(BooksRepositories);
+      const addressesRepo = transactionalEntityManager.getCustomRepository(AddressesRepositories);
+      const shippingService = new ShippingService();
+
+      let freight = 0;
+
+      if (addressId) {
+        // buscar endereço para obter zipcode
+        const deliveryAddress = await addressesRepo.findOne({ where: { id: Number(addressId) } });
+        if (!deliveryAddress) throw new Error("Endereço de entrega não encontrado");
+
+        const toPostal = (deliveryAddress as any).zipCode || (deliveryAddress as any).zip || (deliveryAddress as any).cep;
+        if (!toPostal) throw new Error("Endereço de entrega não possui CEP/zipCode");
+
+        // montar items para empacotamento (usa Book.dimensions e Book.price)
+        const cartItemsForPacking: Array<any> = [];
+        for (const it of cart.items) {
+          const bookId = Number((it as any).bookId);
+          const book = await booksRepo.findOne({ where: { id: bookId } });
+          if (!book) throw new Error(`Livro ${bookId} não encontrado para cálculo de frete`);
+
+          cartItemsForPacking.push({
+            bookId: book.id,
+            quantity: Number((it as any).quantity || 1),
+            dimensions: (book as any).dimensions || { height: 1, width: 1, depth: 1, weight: 0.1 },
+            price: Number((it as any).price ?? (book as any).price ?? 0),
+          });
+        }
+
+        // chamar o serviço de frete com tratamento de erro
+        try {
+          const quote = await shippingService.calculateQuote({
+            toPostalCode: String(toPostal),
+            cartItems: cartItemsForPacking,
+            fromPostalCode: process.env.MELHOR_ENVIO_ORIGIN_POSTAL_CODE || undefined,
+            persist: false,
+          });
+
+          // escolher o menor preço disponível (se existir)
+          const services = Array.isArray(quote.services) ? quote.services : (quote.services?.result || quote.services?.services || []);
+          if (quote.lowestPrice && Number(quote.lowestPrice) > 0) {
+            freight = Number(quote.lowestPrice);
+          } else if (Array.isArray(services) && services.length > 0) {
+            const first = services[0];
+            freight = Number(first.custom_price ?? first.price ?? first.price_total ?? 0);
+          } else {
+            freight = 0;
+          }
+        } catch (err: any) {
+          // erro ao calcular frete: registrar e aplicar fallback
+          // NOTE: err.message já é string thanks ao ShippingService
+          console.error("Erro ao calcular frete:", err.message ?? err);
+          // fallback: não bloquear checkout — definir frete 0
+          freight = 0;
+
+          // se preferir abortar a venda quando falhar no cálculo do frete, descomente:
+          // throw new Error("Erro ao calcular frete: " + (err.message || err));
+        }
+      } else {
+        freight = 0;
+      }
+      // --- FIM: cálculo de frete ---
+
+      //Fim do frete
+
+
       let couponTotal = 0;
 
       // Criar entidade Sale

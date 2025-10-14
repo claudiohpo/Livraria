@@ -5,6 +5,8 @@ import {router} from "./routes";
 import "express-async-errors"; // Permite que o express entenda erros assíncronos
 import "reflect-metadata";
 import "./database/index"; // Importa a configuração do banco de dados
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 
