@@ -413,10 +413,10 @@ export class CreateSaleService {
       let freight = 0;
 
       if (selectedShipping && typeof selectedShipping.freightValue !== "undefined") {
-        // Frontend enviou a opção escolhida — usamos esse valor
+        // Frontend enviou a opção escolhida
         freight = Number(selectedShipping.freightValue || 0);
 
-        // Opcional: validação server-side (recomendado em ambientes onde não se confia no cliente)
+        
         // Ative definindo VALIDATE_SELECTED_SHIPPING=true no .env
         if (process.env.VALIDATE_SELECTED_SHIPPING === "true") {
           if (!addressId) {

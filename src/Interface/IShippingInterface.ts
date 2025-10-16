@@ -14,7 +14,6 @@ interface IShippingService {
     raw?: any;
   }>;
 
-  // Opcional: caso queira expor criação direta de shipment pelo mesmo service
   createShipment?(params: {
     saleId: number;
     freightValue: number;

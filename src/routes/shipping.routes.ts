@@ -18,10 +18,9 @@ const getShipmentController = new GetShipmentController();
 const updateShipmentController = new UpdateShipmentController();
 const deleteShipmentController = new DeleteShipmentController();
 
-// rota para calcular opções (aponta para controller que chama o service)
+
 router.post("/calculate", calculateShippingController.handle.bind(calculateShippingController));
 
-// CRUD de shipments
 router.post("/", createShipmentController.handle.bind(createShipmentController));
 router.get("/", listShipmentsController.handle.bind(listShipmentsController));
 router.get("/:id", getShipmentController.handle.bind(getShipmentController));

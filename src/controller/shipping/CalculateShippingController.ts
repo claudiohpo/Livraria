@@ -6,7 +6,6 @@ export class CalculateShippingController {
         try {
             const { fromPostalCode, toPostalCode, cartItems } = req.body;
 
-            // Validação mínima — se preferir mover totalmente para Service, remova estas checagens
             if (!toPostalCode) {
                 return res.status(400).json({ error: "toPostalCode é obrigatório" });
             }
