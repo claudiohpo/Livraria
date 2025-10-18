@@ -14,7 +14,6 @@ export class UpdateBookController {
       return res.json(updated);
     } catch (err: any) {
       console.error("UpdateBookController:", err);
-      // erros de validação retornam 400
       if (err.message && (err.message.includes("não encontrado") || err.message.includes("já cadastrado"))) {
         return res.status(400).json({ error: err.message });
       }

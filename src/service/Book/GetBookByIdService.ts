@@ -11,18 +11,18 @@ export class GetBookByIdService {
 
     const book = await bookRepo.findOne({
       where: { id },
+      relations: ["categories", "pricegroup", "images"]
     });
 
     if (!book) {
       throw new Error(`Livro não encontrado com id: ${id}`);
     }
 
-    // Retorna todas as informações relevantes do livro
     return {
       id: book.id,
       title: (book as any).title ?? null,
       author: (book as any).author ?? null,
-      category: (book as any).category ?? null,
+      categories: (book as any).categories ?? null,
       year: (book as any).year ?? null,
       publisher: (book as any).publisher ?? null,
       edition: (book as any).edition ?? null,

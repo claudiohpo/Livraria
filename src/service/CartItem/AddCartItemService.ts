@@ -91,15 +91,21 @@ export class AddCartItemService {
         const reservationData: any = {
           inventoryId: row.id,
           cartItemId: cartItem.id,
-          quantity: take,
-          expiresAt: null // TTL / job externo gerencia expiração  *** Implementar no futuro
+          quantity: take,          
+          expiresAt: new Date(Date.now() + 60 * 1000) // expira em 1 minuto
         };
-        await resRepo.save(reservationData);
+        //await resRepo.save(reservationData);
+        const savedReservation = await resRepo.save(reservationData);
+        console.info(`[reservation] created id=${savedReservation.id} inventoryId=${savedReservation.inventoryId} cartItemId=${savedReservation.cartItemId} qty=${savedReservation.quantity} expiresAt=${savedReservation.expiresAt}`);
+
 
         toReserve -= take;
       }
 
-      return cartItem;
+      // retornar o carrinho atualizado com items
+      const cartUpdated = await cartsRepo.findOne(cartIdNum, { relations: ["items"] } as any);
+      return cartUpdated;
+
     });
   }
 }

@@ -1,4 +1,3 @@
-// src/controller/checkout/CheckoutGetByIdController.ts
 import { Request, Response } from "express";
 import { ListSaleByIDService } from "../../service/Checkout/ListSaleByIDService";
 

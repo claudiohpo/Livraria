@@ -1,4 +1,3 @@
-// src/service/checkout/ListCheckoutByIDService.ts
 import { getManager } from "typeorm";
 import { SalesRepositories } from "../../repositories/SalesRepositories";
 import { SaleItemsRepository } from "../../repositories/SaleItemsRepositories";
@@ -7,10 +6,7 @@ import { AddressesRepositories } from "../../repositories/AddressesRepositories"
 import { BooksRepositories } from "../../repositories/BooksRepositories";
 import { ShipmentsRepositories } from "../../repositories/ShipmentsRepositories";
 
-/**
- * ListCheckoutByIDService
- * Retorna objeto enriquecido da venda identificada por saleId.
- */
+
 export class ListSaleByIDService {
     async execute(saleId: number) {
         if (!saleId || Number.isNaN(saleId)) throw new Error("saleId inválido");
@@ -30,7 +26,7 @@ export class ListSaleByIDService {
         // buscar itens
         const saleItems = await saleItemsRepo.find({ where: { sale: sale } as any });
 
-        // enriquecer itens com dados do livro
+        // Preencher dados dos livros em cada item
         const enrichedItems = [];
         for (const it of saleItems) {
             let book = null;

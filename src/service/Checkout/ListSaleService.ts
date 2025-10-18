@@ -1,19 +1,3 @@
-// import { getRepository } from "typeorm";
-// import { Sale } from "../../entities/Sale";
-
-// export class ListSaleService {
-//     async execute(filter?: { id?: number; clientId?: number; status?: string }) {
-//         const saleRepo = getRepository(Sale);
-//         const where: any = {};
-//         if (filter?.id) where.id = filter.id;
-//         if (filter?.clientId) where.clientId = filter.clientId;
-//         if (filter?.status) where.status = filter.status;
-//         const sales = await saleRepo.find({ where, order: { created_at: "DESC" } });
-//         return sales;
-//     }
-// }
-
-// src/service/checkout/ListSaleService.ts
 import { getManager } from "typeorm";
 import { SalesRepositories } from "../../repositories/SalesRepositories";
 import { SaleItemsRepository } from "../../repositories/SaleItemsRepositories";
@@ -21,14 +5,6 @@ import { PaymentsRepository } from "../../repositories/PaymentsRepositories";
 import { AddressesRepositories } from "../../repositories/AddressesRepositories";
 import { BooksRepositories } from "../../repositories/BooksRepositories";
 
-/**
- * ListSaleService
- * - retorna vendas com enrich:
- *   - items: [{ id, bookId, quantity, unitPrice, book: { id, title, author, ISBN, dimensions, price } }]
- *   - freightValue (número)
- *   - payments (se existirem)
- *   - deliveryAddress (se existir)
- */
 export class ListSaleService {
     async execute(filter: any = {}) {
         const manager = getManager();
@@ -38,8 +14,7 @@ export class ListSaleService {
         const addressesRepo = manager.getCustomRepository(AddressesRepositories);
         const booksRepo = manager.getCustomRepository(BooksRepositories);
 
-        // Buscar vendas com o filtro (mantive flexível: filter pode ser {} ou { clientId: x } etc.)
-        // Ajuste o order/where conforme seu padrão (aqui ordeno por created_at desc se existir)
+        // buscar vendas
         const sales = await salesRepo.find({
             where: filter as any,
             order: { created_at: "DESC" } as any,
@@ -56,7 +31,7 @@ export class ListSaleService {
             // Enriquecer cada item com dados do livro
             const enrichedItems = [];
             for (const it of saleItems) {
-                // tentar pegar book completo
+                // Tentar pegar book completo
                 let book = null;
                 try {
                     book = await booksRepo.findOne({ where: { id: Number((it as any).bookId) } as any });
@@ -98,7 +73,7 @@ export class ListSaleService {
                 deliveryAddress = await addressesRepo.findOne({ where: { id: Number(addrId) } as any });
             }
 
-            // montar objeto de resposta com tudo que importa
+            // montar objeto da venda
             result.push({
                 id: (sale as any).id,
                 status: (sale as any).status,

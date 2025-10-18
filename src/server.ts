@@ -5,6 +5,7 @@ import {router} from "./routes";
 import "express-async-errors"; // Permite que o express entenda erros assíncronos
 import "reflect-metadata";
 import "./database/index"; // Importa a configuração do banco de dados
+import { CleanupExpiredReservationsService } from "./service/Inventory/CleanupExpiredReservationsService";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -36,3 +37,19 @@ app.use(
 console.log("Start at =>3000"); //mostrar msg no console
 
 app.listen(3000);
+
+const cleanupService = new CleanupExpiredReservationsService();
+
+// rodar a cada 30 segundos (30_000 ms)
+const CLEANUP_INTERVAL_MS = Number(process.env.RESERVATION_CLEANUP_INTERVAL_MS || 30_000);
+
+setInterval(async () => {
+  try {
+    const res = await cleanupService.execute();
+    if (res && (res.removed || res.restored)) {
+      console.info("[cleanup] expired reservations handled:", res);
+    }
+  } catch (err) {
+    console.error("[cleanup] error", err);
+  }
+}, CLEANUP_INTERVAL_MS);
