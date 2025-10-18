@@ -86,7 +86,7 @@ export class AddCartItemService {
         // decrementar a linha de inventário
         row.quantity = Number(row.quantity) - take;
         await invRepo.save(row);
-
+   
         // Criar reserva
         const reservationData: any = {
           inventoryId: row.id,
