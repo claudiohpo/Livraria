@@ -31,7 +31,8 @@ export class UpdateCostumerService {
     if (payload.name !== undefined) costumer.name = String(payload.name).trim();
     if (payload.phone !== undefined) costumer.phone = String(payload.phone).trim();
     if (payload.gender !== undefined) costumer.gender = String(payload.gender).trim();
-    if (payload.birthdaydate !== undefined) costumer.birthdaydate = new Date(payload.birthdaydate as any);
+    // if (payload.birthdaydate !== undefined) costumer.birthdaydate = new Date(payload.birthdaydate as any);
+    if (payload.birthdaydate !== undefined) costumer.birthdaydate = String(payload.birthdaydate).trim();
 
     // Verificação de e-mail
     if (payload.email !== undefined && String(payload.email).trim() !== "") {

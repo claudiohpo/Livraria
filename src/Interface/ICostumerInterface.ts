@@ -9,7 +9,7 @@ interface ICostumerRequest {
     passwordConfirmation: string;
     cpf: string;
     phone: string;
-    birthdaydate: Date;
+    birthdaydate: string;
     gender: string;
     billingAddress: IAddressRequest[]; //RN0021
     deliveryAddress: IAddressRequest[]; //RN0022

@@ -98,7 +98,8 @@ export class CreateCostumerService {
       password: hashedPassword,
       cpf: ("" + cpf).replace(/\D/g, ""),
       phone: phone.trim(),
-      birthdaydate: new Date(birthdaydate),
+      // birthdaydate: new Date(birthdaydate),
+      birthdaydate: birthdaydate.trim(),
       gender: gender.trim(),
       ranking: 0,
     };

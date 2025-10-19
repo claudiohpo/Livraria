@@ -22,8 +22,17 @@ export class Costumer {
   @Column({ length: 30 })
   phone!: string;
 
-  @Column({ type: "date" })
-  birthdaydate!: Date;
+  // @Column({ type: "date" })
+  // birthdaydate!: string;
+
+  @Column({
+    type: "date",
+    transformer: {
+      to: (value: string) => value,       // envia string direto para o banco
+      from: (value: string) => value,     // lê string direto do banco
+    },
+  })
+  birthdaydate!: string;
 
   @Column({ length: 10 })
   gender!: string;
