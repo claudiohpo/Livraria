@@ -13,6 +13,10 @@ import addressRoutes from "./routes/address.routes";
 import creditcardRoutes from "./routes/creditcards.routes";
 import coupon from "./routes/coupons.routes";
 import shippingRoutes from "./routes/shipping.routes";
+import exchangesRoutes from "./routes/exchanges.routes";
+import returnRoutes from "./routes/returns.routes";
+import refundsRoutes from "./routes/refunds.routes";
+import salesRoutes from "./routes/sales.routes";
 
 
 const router = Router();
@@ -31,5 +35,9 @@ router.use("/address", addressRoutes);
 router.use("/creditcards", creditcardRoutes);
 router.use("/coupons", coupon);
 router.use("/shipping", shippingRoutes);
+router.use("/exchanges", exchangesRoutes);
+router.use("/returns", returnRoutes);
+router.use("/refunds", refundsRoutes);
+router.use("/sales", salesRoutes);
 
 export {router};
