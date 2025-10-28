@@ -99,7 +99,7 @@ export class CreateCostumerService {
       cpf: ("" + cpf).replace(/\D/g, ""),
       phone: phone.trim(),
       // birthdaydate: new Date(birthdaydate),
-      birthdaydate: birthdaydate.trim(),
+      birthdaydate: birthdaydate,
       gender: gender.trim(),
       ranking: 0,
     };

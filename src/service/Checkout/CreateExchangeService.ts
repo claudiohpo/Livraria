@@ -66,13 +66,13 @@ export class CreateExchangeService {
       const sale = await salesRepo.findOne(saleId, { relations: ['items'] });
       if (!sale) throw new Error('Venda não encontrada');
 
-      if ((sale.status || '').toUpperCase() !== 'ENTREGUE') {
+      if ((sale.status || '').toUpperCase() !== 'ENTREGUE' && (sale.status || '').toUpperCase() !== 'DELIVERED') {
         throw new Error('Somente vendas com status ENTREGUE podem solicitar troca');
       }
 
       const ex = exchangesRepo.create({
         vendaId: sale.id,
-        status: 'EM_TROCA',
+        status: 'IN_EXCHANGE',
         motivo: motivo || null,
         dataSolicitacao: new Date()
       } as Exchange);
@@ -88,8 +88,8 @@ export class CreateExchangeService {
         await exchangeItemRepo.save(exchangeItem);
       }
 
-      // Atualizar status da venda para EM_TROCA
-      sale.status = 'EM_TROCA';
+      // Atualizar status da venda para IN_EXCHANGE
+      sale.status = 'IN_EXCHANGE';
       await salesRepo.save(sale);
 
       return { exchangeId: savedEx.id };
