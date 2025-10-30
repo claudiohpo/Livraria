@@ -72,7 +72,7 @@ export class CreateExchangeService {
 
       const ex = exchangesRepo.create({
         vendaId: sale.id,
-        status: 'IN_EXCHANGE',
+        status: 'EXCHANGE',
         motivo: motivo || null,
         dataSolicitacao: new Date()
       } as Exchange);
@@ -89,7 +89,7 @@ export class CreateExchangeService {
       }
 
       // Atualizar status da venda para IN_EXCHANGE
-      sale.status = 'IN_EXCHANGE';
+      sale.status = 'EXCHANGE';
       await salesRepo.save(sale);
 
       return { exchangeId: savedEx.id };

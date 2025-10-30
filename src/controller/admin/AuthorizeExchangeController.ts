@@ -11,11 +11,11 @@ export class AuthorizeExchangeController {
       const ex = await repo.findOne(exchangeId);
       if (!ex) return res.status(404).json({ error: 'Troca não encontrada' });
 
-      if ((ex.status || '').toUpperCase() !== 'EM_TROCA' && (ex.status || '').toUpperCase() !== 'PENDING') {
+      if ((ex.status || '').toUpperCase() !== 'EXCHANGE' && (ex.status || '').toUpperCase() !== 'PENDING') {
         return res.status(400).json({ error: 'Troca não está em estado autorizável' });
       }
 
-      ex.status = 'AUTORIZADA';
+      ex.status = 'EXCHANGE_AUTHORIZED';
       ex.dataAutorizacao = new Date();
       await repo.save(ex);
 
