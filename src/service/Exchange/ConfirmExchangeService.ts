@@ -22,11 +22,11 @@ export class ConfirmExchangeService {
       const exchange = await exchangesRepo.findOne(exchangeId, { relations: ["items"] });
       if (!exchange) throw new Error("Troca não encontrada");
 
-      // validar status
-      const currentStatus = (exchange.status || "").toUpperCase();
-      if (currentStatus !== "EXCHANGE" && currentStatus !== "EM_TROCA") {
-        throw new Error(`Troca em status inválido para recebimento: ${exchange.status}`);
-      }
+      // // validar status
+      // const currentStatus = (exchange.status || "").toUpperCase();
+      // if (currentStatus !== "EXCHANGE" && currentStatus !== "EM_TROCA") {
+      //   throw new Error(`Troca em status inválido para recebimento: ${exchange.status}`);
+      // }
 
       // buscar itens da troca
       const items = exchange.items && exchange.items.length
@@ -58,7 +58,9 @@ export class ConfirmExchangeService {
 
       // atualizar troca
       exchange.dataRecebimento = new Date();
-      exchange.status = "TROCADO";
+      exchange.status = "EXCHANGE_AUTHORIZED";
+
+      let validadeCupom: Date | null = null;
 
       if (totalCupom > 0) {
         let clienteId = "0";
@@ -66,16 +68,22 @@ export class ConfirmExchangeService {
           const relatedSale = await salesRepo.findOne(exchange.vendaId);
           clienteId = relatedSale && relatedSale.clientId ? String(relatedSale.clientId) : "0";
         }
-        const codigo = `TROCA-${Date.now().toString(36)}-${clienteId}`;
-        //const codigo = `TROCA-${Date.now().toString(36)}`;
+
+        const codigo = `TROCA-${Date.now().toString(36)}-${exchange.id}-${clienteId}`;
+
+        // Definir validade de 30 dias a partir de hoje
+        validadeCupom = new Date();
+        validadeCupom.setDate(validadeCupom.getDate() + 30);
+
         const cupom = couponRepo.create({
           code: codigo,
           value: totalCupom,
-          validity: null,
+          validity: validadeCupom,
           used: false,
           type: "EXCHANGE",
           saleUsedId: null
         } as Partial<Coupon>);
+
         await couponRepo.save(cupom);
 
         exchange.codigoCupom = codigo;
@@ -88,7 +96,7 @@ export class ConfirmExchangeService {
       if (exchange.vendaId) {
         const sale = await salesRepo.findOne(exchange.vendaId);
         if (sale) {
-          sale.status = "TROCADO";
+          sale.status = "EXCHANGE_AUTHORIZED";
           await salesRepo.save(sale);
         }
       }
@@ -97,7 +105,8 @@ export class ConfirmExchangeService {
         exchangeId: exchange.id,
         returnedToStock: !!returnToStock,
         couponValue: totalCupom,
-        couponCode: exchange.codigoCupom || null
+        couponCode: exchange.codigoCupom || null,
+        couponValidity: validadeCupom // retorna a data de validade no JSON
       };
     });
   }
