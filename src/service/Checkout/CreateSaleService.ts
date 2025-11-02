@@ -269,6 +269,35 @@ export class CreateSaleService {
       saleEntity.total = Math.round(((itemsTotal + freight - couponTotal) + Number.EPSILON) * 100) / 100;
       await salesRepo.save(saleEntity);
 
+      // --- RN0035: Uso de cupons junto a cartão de crédito ---
+      const hasCoupons = appliedCoupons.length > 0;
+      const cardPayments = createdPaymentEntities.filter(c => c.pay.type === "CARD");
+
+      // Se houver cupons + cartões
+      if (hasCoupons && cardPayments.length > 0) {
+        // Valor que sobra após aplicar cupons
+        const residual = saleEntity.total;
+
+        for (const cp of cardPayments) {
+          const val = Number(cp.pay.value || 0);
+
+          // Se o valor do cartão for menor que 10, só é permitido se for exatamente o residual
+          if (val < 10 && val !== residual) {
+            throw new Error(
+              `Pagamento com cartão de valor menor que R$ 10,00 só é permitido para o valor residual da compra (${residual}).`
+            );
+          }
+        }
+      } else if (cardPayments.length > 0) {
+        // Cenário sem cupons: aplica RN0034 (mínimo R$ 10,00 por cartão)
+        for (const cp of cardPayments) {
+          const val = Number(cp.pay.value || 0);
+          if (val < 10) {
+            throw new Error("Cada pagamento com cartão deve ser de no mínimo R$ 10,00.");
+          }
+        }
+      }
+
       // Validação: somatório dos pagamentos - deve bater com saleEntity.total 
       const sumPayments = createdPaymentEntities.reduce((acc, c) => acc + Number(c.pay.value || 0), 0);
       const sumPaymentsRounded = Math.round((sumPayments + Number.EPSILON) * 100) / 100;

@@ -17,6 +17,7 @@ import exchangesRoutes from "./routes/exchanges.routes";
 import returnRoutes from "./routes/returns.routes";
 import refundsRoutes from "./routes/refunds.routes";
 import salesRoutes from "./routes/sales.routes";
+import groqRoutes from "./routes/groq.routes";
 
 
 const router = Router();
@@ -39,5 +40,6 @@ router.use("/exchanges", exchangesRoutes);
 router.use("/returns", returnRoutes);
 router.use("/refunds", refundsRoutes);
 router.use("/sales", salesRoutes);
+router.use("/groq", groqRoutes);
 
 export {router};
