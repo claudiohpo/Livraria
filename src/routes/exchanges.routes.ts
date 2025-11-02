@@ -7,7 +7,6 @@ import { AuthorizeExchangeController } from "../controller/admin/AuthorizeExchan
 import { ListExchangesController } from "../controller/checkout/ListExchangesController";
 import { ExchangeController } from "../controller/exchange/ExchangeController";
 
-
 const router = Router();
 
 const createExchangeController = new CreateExchangeController();
