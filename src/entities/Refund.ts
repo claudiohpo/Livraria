@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-
 @Entity({ name: 'sale_refunds' })
 export class Refund {
     @PrimaryGeneratedColumn({ type: 'int' })
@@ -24,7 +23,7 @@ export class Refund {
 
 
     @Column({ type: 'int', nullable: true })
-    paymentId: number | null; // original payment reference
+    paymentId: number | null; // ID do pagamento original
 
 
     @CreateDateColumn({ name: 'created_at' })

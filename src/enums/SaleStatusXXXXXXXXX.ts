@@ -6,3 +6,5 @@ export enum SaleStatus {
   RETURN_PENDING = "RETURN_PENDING",
   TROCADA = "TROCADA"
 }
+
+//Em Construção -- ainda não utilizado

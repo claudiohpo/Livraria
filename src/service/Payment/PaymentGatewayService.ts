@@ -2,7 +2,6 @@ export class PaymentGatewayService {
   /**
     * Captura simulada de pagamentos com cartão.
     * Por enquanto simula aprovação na maioria dos casos, mas retorna falso se qualquer número de cartão terminar com '0000' para simular falha.
-    * Em produção, substituir pela integração real com o provedor e webhooks.
     */
 
   async captureCardPayment(cardInfo: { cardId?: string; number?: string; amount: number }) {

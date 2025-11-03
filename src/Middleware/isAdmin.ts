@@ -20,4 +20,3 @@ export function isAdmin(req: Request, res: Response, next: NextFunction): void {
         res.status(500).json({ error: 'Erro no middleware isAdmin' });
     }
 }
-

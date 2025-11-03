@@ -19,8 +19,6 @@ export class AuthorizeExchangeController {
       ex.dataAutorizacao = new Date();
       await repo.save(ex);
 
-      // TODO: reservar novos itens / gerar cupom / notificar cliente
-
       return res.status(200).json({ ok: true, exchangeId: ex.id, status: ex.status });
     } catch (err: any) {
       return res.status(500).json({ error: String(err.message || err) });

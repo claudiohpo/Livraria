@@ -5,16 +5,6 @@ import { InventoryRepository } from "../../repositories/InventoryRepositories";
 import { CartItemsRepositories } from "../../repositories/CartItemsRepositories";
 import { CartsRepositories } from "../../repositories/CartsRepositories";
 
-/**
- * Serviço que:
- * - encontra reservas com expiresAt < now
- * - devolve as quantidades ao inventário (inv.quantity += reservation.quantity)
- * - atualiza o CartItem (subtrai quantidade reservada; remove item se chegar a 0)
- * - marca o Cart como inactive se ficar sem itens
- * - remove as reservas expiradas
- *
- * Tudo em TRANSAÇÃO para manter consistência.
- */
 export class CleanupExpiredReservationsService {
     async execute() {
         return await getManager().transaction(async transactionalEntityManager => {
@@ -25,7 +15,7 @@ export class CleanupExpiredReservationsService {
 
             const now = new Date();
 
-            // buscar reservas expiradas com LessThan
+            // buscar reservas expiradas 
             const expired = await resRepo.find({
                 where: { expiresAt: LessThan(now) } as any
             });
@@ -39,7 +29,7 @@ export class CleanupExpiredReservationsService {
 
             for (const r of expired) {
                 try {
-                    // 1) devolver quantidade ao inventário (se existir)
+                    // devolver quantidade ao inventário (se existir)
                     const inv = await invRepo.findOne(r.inventoryId);
                     if (inv) {
                         inv.quantity = Number(inv.quantity || 0) + Number(r.quantity || 0);
@@ -47,7 +37,7 @@ export class CleanupExpiredReservationsService {
                         restoredCount++;
                     }
 
-                    // 2) ajustar CartItem associado (subtrair quantidade reservada)
+                    // ajustar CartItem associado (subtrair quantidade reservada)
                     if (r.cartItemId) {
                         const cartItem = await cartItemsRepo.findOne({ where: { id: r.cartItemId } as any });
                         if (cartItem) {
@@ -64,7 +54,7 @@ export class CleanupExpiredReservationsService {
                                 updatedCartItems++;
                             }
 
-                            // 3) verificar se o carrinho ficou sem items -> desativar o cart
+                            // verificar se o carrinho ficou sem items -> desativar o cart
                             const cart = await cartsRepo.findOne(cartItem.cartId, { relations: ["items"] } as any);
                             if (cart) {
                                 const itemsCount = (cart.items && cart.items.length) ? cart.items.length : 0;
@@ -78,11 +68,11 @@ export class CleanupExpiredReservationsService {
                         }
                     }
 
-                    // 4) remover a reserva
+                    // remover a reserva
                     await resRepo.remove(r);
                     removedCount++;
                 } catch (e) {
-                    // log and continue
+
                     console.error("Falha ao restaurar reserva", r.id, e);
                 }
             }

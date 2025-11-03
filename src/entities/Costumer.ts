@@ -24,7 +24,7 @@ export class Costumer {
 
   // @Column({ type: "date" })
   // birthdaydate!: string;
-
+  // Modificação para armazenar como string no formato 'YYYY-MM-DD' devido problemas com timezones no TypeORM
   @Column({
     type: "date",
     transformer: {

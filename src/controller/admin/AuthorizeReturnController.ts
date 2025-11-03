@@ -18,8 +18,6 @@ export class AuthorizeReturnController {
             ret.status = 'AUTHORIZED';
             await repo.save(ret);
 
-            // TODO: instruir logística de recebimento, reestocagem condicional
-
             return res.status(200).json({ ok: true, returnId: ret.id, status: ret.status });
         } catch (err: any) {
             return res.status(500).json({ error: String(err.message || err) });

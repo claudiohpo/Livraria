@@ -82,7 +82,7 @@ export class CreateSaleService {
         }
       }
 
-      // --- INÍCIO: cálculo/decisão de frete ---
+      // Calcular valor do frete
       let freight = 0;
 
       if (selectedShipping && typeof selectedShipping.freightValue !== "undefined") {
@@ -90,7 +90,7 @@ export class CreateSaleService {
         freight = Number(selectedShipping.freightValue || 0);
 
 
-        // Ative definindo VALIDATE_SELECTED_SHIPPING=true no .env
+        // Ativar validação contra provider externo
         if (process.env.VALIDATE_SELECTED_SHIPPING === "true") {
           if (!addressId) {
             // Não há endereço para validar contra o provider
@@ -114,7 +114,7 @@ export class CreateSaleService {
                 ? remoteQuote.services
                 : (remoteQuote.services?.result || remoteQuote.services?.services || []);
 
-              // try to find service by id or by price
+              // tentar encontrar correspondência do serviço selecionado
               let matched: any = null;
               if (selectedShipping.serviceId) {
                 matched = (services || []).find((s: any) =>
@@ -182,7 +182,7 @@ export class CreateSaleService {
       } else {
         freight = 0;
       }
-      // --- FIM: cálculo/decisão de frete ---
+      // Final do cálculo do frete
 
       let couponTotal = 0;
 
@@ -363,32 +363,7 @@ export class CreateSaleService {
         await salesRepo.save(saleEntity);
       }
 
-      // Efetuando testee de controle de estoque --Versão original--
       // Controle de estoque
-      // const saleItems = await saleItemsRepo.find({ where: { sale: saleEntity } as any });
-      // for (const it of saleItems) {
-      //   let remaining = Number((it as any).quantity);
-
-      //   const invEntries = (await invRepo.find({
-      //     where: { bookId: it.bookId } as any,
-      //     order: { createdAt: "ASC" } as any
-      //   })) as Inventory[];
-
-      //   for (const entry of invEntries) {
-      //     if (remaining <= 0) break;
-      //     const available = Number(entry.quantity || 0);
-      //     if (available <= 0) continue;
-      //     const take = Math.min(available, remaining);
-      //     entry.quantity = available - take;
-      //     remaining -= take;
-      //     await invRepo.save(entry);
-      //   }
-      //   if (remaining > 0) {
-      //     throw new Error(`Não há estoque suficiente para o LivroID ${it.bookId}`);
-      //   }
-      // }
-
-      // Controle de estoque (ajustado para considerar Reservations)
       const resRepo = transactionalEntityManager.getCustomRepository(InventoryReservationsRepository);
 
       // Usar os cart items para controle de estoque
@@ -444,7 +419,7 @@ export class CreateSaleService {
           remaining -= use;
         }
 
-        // agora remaining > 0 => precisamos decrementar do Inventory (FIFO)
+        // agora remaining > 0 => decrementar do Inventory (FIFO)
         if (remaining > 0) {
           const invEntries = (await invRepo.find({
             where: { bookId: bookId } as any,
@@ -467,7 +442,7 @@ export class CreateSaleService {
           }
         }
       }
-      // --- fim controle de estoque ---
+      // Final controle de estoque
 
 
       saleEntity.status = "APPROVED";

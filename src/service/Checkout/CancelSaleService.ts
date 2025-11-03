@@ -34,21 +34,17 @@ export class CancelSaleService {
                 const savedRefund = await refundsRepo.save(refund);
 
 
-                // processa estorno de forma síncrona (simulação conforme infra)
+                // processa estorno de forma síncrona 
                 const pr = new ProcessRefundService();
                 await pr.execute({ refundId: savedRefund.id });
             }
-
 
             // Atualizar status da venda
             sale.status = 'CANCELADA';
             await salesRepo.save(sale);
 
-
             // Reestocar se os itens já haviam sido baixados do estoque
-            // TODO: adaptar lógica de estoque — 
             // await InventoryService.restockSaleItems(sale.items);
-
 
             return { saleId: sale.id, status: sale.status };
         });

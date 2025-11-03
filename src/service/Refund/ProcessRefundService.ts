@@ -3,10 +3,7 @@ import { Refund } from '../../entities/Refund';
 import { RefundsRepositories } from '../../repositories/RefundsRepositories';
 
 export class ProcessRefundService {
-    /**
-     * Processa um refund registrado na tabela sale_refunds.
-     * Observação: atualmente essa implementação faz uma simulação do processamento.
-     */
+
     async execute({ refundId }: { refundId: number }) {
         if (!refundId) throw new Error('refundId é obrigatório');
 
@@ -20,12 +17,7 @@ export class ProcessRefundService {
             }
 
             try {
-                // TODO: integrar com gateway  aqui
-                // Exemplo:
-                // if (refund.method === 'CARD') { await gateway.refund({ paymentId: refund.paymentId, amount: refund.amount }); }
-                // if (refund.method === 'COUPON') { criar cupom ou creditar conta }
-
-                // Simulação: marca como COMPLETED
+                // Simular processamento de reembolso
                 refund.status = 'COMPLETED';
                 await refundsRepo.save(refund);
 

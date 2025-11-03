@@ -9,7 +9,8 @@ export class QuoteShippingController {
                 return res.status(400).json({ error: "toPostalCode e cartItems são obrigatórios" });
             }
             const svc = new ShippingService();
-            const quote = await svc.calculateQuote({ fromPostalCode, toPostalCode, cartItems, persist: !!persist });
+            const quote = await svc.calculateQuote({ fromPostalCode, toPostalCode, cartItems });
+            
             return res.json(quote);
         } catch (err: any) {
             const msg = err?.message ?? String(err);

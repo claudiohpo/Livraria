@@ -1,4 +1,3 @@
-// src/controller/inventory/CleanupReservationsController.ts
 import { Request, Response } from "express";
 import { CleanupExpiredReservationsService } from "../../service/Inventory/CleanupExpiredReservationsService";
 

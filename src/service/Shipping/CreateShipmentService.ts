@@ -4,10 +4,7 @@ import { Shipment } from "../../entities/Shipment";
 import { SalesRepositories } from "../../repositories/SalesRepositories";
 
 export class CreateShipmentService {
-    /**
-     * Cria um Shipment e atualiza a Sale associada (freightValue e total) dentro de uma transação.
-     * data: { saleId, freightValue, trackingCode?, carrier?, serviceName? }
-     */
+
     async execute(data: {
         saleId: number;
         freightValue: number;

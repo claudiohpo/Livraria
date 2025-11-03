@@ -40,7 +40,7 @@ export class ListBookService {
         if (filter?.cost) qb.andWhere("book.cost = :cost", { cost: Number(filter.cost) });
         if (filter?.pricegroup) qb.andWhere("pricegroup.name ILIKE :pg", { pg: `%${filter.pricegroup}%` });
 
-        // filtro por dimensions (se quiser igualdade exata em algum campo)
+        // filtro por dimensions
         if (filter?.dimensions) {
             const d = filter.dimensions;
             if (typeof d.height !== "undefined") qb.andWhere("book.dimensions->>'height' = :height", { height: String(d.height) });

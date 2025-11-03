@@ -22,12 +22,6 @@ export class ConfirmExchangeService {
       const exchange = await exchangesRepo.findOne(exchangeId, { relations: ["items"] });
       if (!exchange) throw new Error("Troca não encontrada");
 
-      // // validar status
-      // const currentStatus = (exchange.status || "").toUpperCase();
-      // if (currentStatus !== "EXCHANGE" && currentStatus !== "EM_TROCA") {
-      //   throw new Error(`Troca em status inválido para recebimento: ${exchange.status}`);
-      // }
-
       // buscar itens da troca
       const items = exchange.items && exchange.items.length
         ? exchange.items
@@ -71,7 +65,7 @@ export class ConfirmExchangeService {
 
         const codigo = `TROCA-${Date.now().toString(36)}-${exchange.id}-${clienteId}`;
 
-        // Definir validade de 30 dias a partir de hoje
+        // Definir validade de 30 dias a partir da data atual
         validadeCupom = new Date();
         validadeCupom.setDate(validadeCupom.getDate() + 30);
 
@@ -106,7 +100,7 @@ export class ConfirmExchangeService {
         returnedToStock: !!returnToStock,
         couponValue: totalCupom,
         couponCode: exchange.codigoCupom || null,
-        couponValidity: validadeCupom // retorna a data de validade no JSON
+        couponValidity: validadeCupom
       };
     });
   }

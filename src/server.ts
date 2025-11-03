@@ -13,7 +13,7 @@ const app = express();
 
 
 app.use(cors({
-    origin: 'http://localhost:5173', // URL do seu frontend React
+    origin: 'http://localhost:5173', // URL do FrontEnd
     credentials: true, // Permite cookies/auth headers
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
