@@ -17,7 +17,7 @@ export class CreateExchangeService {
       const sale = await salesRepo.findOne(saleId, { relations: ['items'] });
       if (!sale) throw new Error('Venda não encontrada');
 
-      if ((sale.status || '').toUpperCase() !== 'ENTREGUE' && (sale.status || '').toUpperCase() !== 'DELIVERED') {
+      if ((sale.status || '').toUpperCase() !== 'ENTREGUE' && (sale.status || '').toUpperCase() !== 'DELIVERED' && !(sale.status || '').toUpperCase().includes('EXCHANGE')){
         throw new Error('Somente vendas com status ENTREGUE podem solicitar troca');
       }
 

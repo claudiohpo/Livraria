@@ -5,10 +5,11 @@ class ExchangeController {
   async confirmReceive(request: Request, response: Response) {
     const { id } = request.params;
     const { returnToStock } = request.body; // boolean
+    const { status } = request.body;
 
     try {
       const service = new ConfirmExchangeService();
-      const result = await service.execute({ exchangeId: parseInt(id, 10), returnToStock: !!returnToStock });
+      const result = await service.execute({ exchangeId: parseInt(id, 10), returnToStock: !!returnToStock, statusOther: status });
       return response.status(200).json(result);
     } catch (err: any) {
       return response.status(400).json({ error: err.message || 'Erro' });
