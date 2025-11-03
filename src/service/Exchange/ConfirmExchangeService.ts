@@ -7,7 +7,7 @@ import { Inventory } from "../../entities/Inventory";
 import { Coupon } from "../../entities/Coupon";
 
 export class ConfirmExchangeService {
-  async execute({ exchangeId, returnToStock }: { exchangeId: number; returnToStock: boolean }) {
+  async execute({ exchangeId, returnToStock, statusOther }: { exchangeId: number; returnToStock: boolean; statusOther: string }) {
     if (!exchangeId) throw new Error("exchangeId é obrigatório");
 
     return await getManager().transaction(async tx => {
@@ -52,7 +52,13 @@ export class ConfirmExchangeService {
 
       // atualizar troca
       exchange.dataRecebimento = new Date();
-      exchange.status = "EXCHANGE_AUTHORIZED";
+      // exchange.status = "EXCHANGE_COMPLETED";
+      if (statusOther) {
+    exchange.status = statusOther;
+   } else {
+    // Comportamento padrão se nenhum status for enviado
+    exchange.status = "EXCHANGE_COMPLETED"; 
+   }
 
       let validadeCupom: Date | null = null;
 
@@ -87,10 +93,16 @@ export class ConfirmExchangeService {
       await exchangesRepo.save(exchange);
 
       // atualizar venda associada
-      if (exchange.vendaId) {
+      if (exchange.vendaId && returnToStock == true) {
         const sale = await salesRepo.findOne(exchange.vendaId);
         if (sale) {
-          sale.status = "EXCHANGE_AUTHORIZED";
+          sale.status = "EXCHANGE_COMPLETED";
+          await salesRepo.save(sale);
+        }
+      } else{
+        const sale = await salesRepo.findOne(exchange.vendaId);
+        if (sale) {
+          sale.status = statusOther;
           await salesRepo.save(sale);
         }
       }
