@@ -69,6 +69,7 @@ export class ConfirmExchangeService {
           clienteId = relatedSale && relatedSale.clientId ? String(relatedSale.clientId) : "0";
         }
 
+        //Utilizado base36 para deixar o código do cupom mais curto (Pode ser revertido se necessário para identificar data original)
         const codigo = `TROCA-${Date.now().toString(36)}-${exchange.id}-${clienteId}`;
 
         // Definir validade de 30 dias a partir da data atual
