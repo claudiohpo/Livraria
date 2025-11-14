@@ -15,6 +15,8 @@
 ## 🔍 Visão geral
 Este repositório concentra o backend que sustenta o frontend da livraria online desenvolvido na disciplina. A API oferece serviços de catálogo, carrinho, checkout, pós-venda e integrações externas que alimentam a experiência de compras do site. O foco é aplicar boas práticas de engenharia de software (camadas, regras de negócio explícitas, domínio rico e integrações controladas).
 
+> O frontend oficial com toda a experiência de compra está descrito no repositório [App_ProjetoLES (Frontend)](https://github.com/marianajpg/App_ProjetoLES). Esta API é consumida pela aplicação disponível em [claudiohpo/Livraria](https://github.com/claudiohpo/Livraria). Este backend expõe seus endpoints em `http://localhost:3000` durante o desenvolvimento.
+
 ### O que já está implementado
 - ✅ Catálogo completo com categorias, livros, imagens e grupos de preço para cálculo automático.
 - ✅ Cadastro de clientes, endereços, cartões e gerenciamento de carrinhos com reserva de estoque.
